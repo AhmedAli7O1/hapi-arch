@@ -1,0 +1,19 @@
+{
+  "name": "hapi-arch",
+  "version": "1.0.0",
+  "description": "plugin test",
+  "author": "https://github.com/AhmedAli7O1",
+  "dependencies": {
+    "axel": "0.0.3",
+    "bluebird": "^3.5.0",
+    "chalk": "^1.1.3",
+    "co": "^4.6.0",
+    "co-prompt": "^1.0.0",
+    "commander": "^2.9.0",
+    "lodash": "^4.17.4",
+    "moment": "^2.18.1"
+  },
+  "bin": {
+    "hapi-arch": "./hapiArch.js"
+  }
+}
