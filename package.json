@@ -1,6 +1,6 @@
 {
   "name": "hapi-arch",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "plugin test",
   "author": "https://github.com/AhmedAli7O1",
   "dependencies": {
@@ -14,6 +14,6 @@
     "moment": "^2.18.1"
   },
   "bin": {
-    "hapi-arch": "./hapiArch.js"
+    "hapi-arch": "./bin/index.js"
   }
 }
