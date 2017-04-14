@@ -1,7 +1,7 @@
 {
   "name": "hapi-arch",
   "version": "1.0.1",
-  "description": "plugin test",
+  "description": "mini framework for hapijs",
   "author": "https://github.com/AhmedAli7O1",
   "dependencies": {
     "axel": "0.0.3",
@@ -15,5 +15,18 @@
   },
   "bin": {
     "hapi-arch": "./bin/index.js"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/AhmedAli7O1/hapi-arch.git"
+  },
+  "keywords": [
+    "hapijs",
+    "api",
+    "mvc",
+    "structure",
+    "architecture",
+    "framework"
+  ],
+  "license": "MIT"
 }
