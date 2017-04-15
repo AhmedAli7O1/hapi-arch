@@ -2,15 +2,15 @@
 
 module.exports = function (settings) {
 
-  const mongooseLib = require('./mongooseLib');
+  const mongooseLib = require('./lib/mongooseLib');
   const path = require('path');
 
   /** SET GLOBALS */
-  require('./globals');
+  require('./lib/globals');
   /** LOAD DIRECTORIES */
-  require('./dirs');
+  require('./lib/dirs');
   /** LOAD CONFIGURATIONS */
-  require('./configLoader');
+  require('./lib/configLoader');
 
   const register = function (server, options, next) {
     let _db;
@@ -23,8 +23,8 @@ module.exports = function (settings) {
         else return;
       })
       .then(() => {
-        const methods = require('./methodsLoader');
-        const policies = require('./policiesLoader');
+        const methods = require('./lib/methodsLoader');
+        const policies = require('./lib/policiesLoader');
         /** LOAD PLUGINS */
         const inject = {
           server: server,
@@ -34,14 +34,14 @@ module.exports = function (settings) {
           policies: policies
         };
 
-        require('./pluginsLoader')(inject, settings);
+        require('./lib/pluginsLoader')(inject, settings);
         return next();
       })
       .catch(err => {
         console.log(err);
         process.exit(1);
       });
-  }
+  };
 
   register.attributes = {
     pkg: require('./package.json')
@@ -49,4 +49,4 @@ module.exports = function (settings) {
 
   return register;
 
-} 
+};

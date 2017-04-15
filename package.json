@@ -1,6 +1,6 @@
 {
   "name": "hapi-arch",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "mini framework for hapijs",
   "author": "https://github.com/AhmedAli7O1",
   "dependencies": {
@@ -11,7 +11,8 @@
     "co-prompt": "^1.0.0",
     "commander": "^2.9.0",
     "lodash": "^4.17.4",
-    "moment": "^2.18.1"
+    "moment": "^2.18.1",
+    "colors": "^1.1.2"
   },
   "bin": {
     "hapi-arch": "./bin/index.js"
