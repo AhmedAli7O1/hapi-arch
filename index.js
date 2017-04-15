@@ -2,7 +2,6 @@
 
 module.exports = function (settings) {
 
-  const mongooseLib = require('./lib/mongooseLib');
   const path = require('path');
   const co = require('co');
 
@@ -23,6 +22,7 @@ module.exports = function (settings) {
         const mongo = _.get(settings, 'config.options.MongoDB');
         let db = null;
         if (mongo) {
+          const mongooseLib = require('./lib/mongooseLib');
           db = yield mongooseLib.createConnection();
         }
 
