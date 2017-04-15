@@ -39,6 +39,7 @@ function genNew () {
     let promptDescription = yield prompt('enter the app description: ');
     let promptVersion = yield prompt('enter the app version (default 1.0.0) : ');
     let promptAuthor = yield prompt(`enter the app author (default ${author}) : `) || author;
+    let mongo = yield prompt('do you want to include mongodb support using mongoose? (y) : ');
 
     const appPkg = {
       name: appName,
@@ -48,17 +49,20 @@ function genNew () {
       dependencies: {
         "hapi": "*",
         "good": "*",
+        "good-squeeze": "*",
+        "good-console": "*",
         "inert": "*",
         "vision": "*",
         "hapi-swagger": "*",
-        "hapi-arch": `^${pkg.version}`,
-        "mongoose": '*'
+        "hapi-arch": `^${pkg.version}`
       },
       scripts: {
-        start: "node index.js",
-        test: "lab ./lib/test.js"
+        start: "node index.js"
       },
     };
+
+    // check if the user want to add mongoose.
+    if (mongo === 'y') appPkg.dependencies['mongoose'] = '*';
 
     console.log(JSON.stringify(appPkg, null, 2));
     let ans = yield prompt('this is your package.json file looks like, is that okay? (y) : ');
@@ -85,20 +89,26 @@ function genNew () {
             name: 'config',
             sub: [
               {
-                type: 'config',
-                name: 'development.js'
-              },
-              {
-                type: 'config',
-                name: 'production.js'
-              },
-              {
-                type: 'config',
-                name: 'staging.js'
-              },
-              {
-                type: 'config',
-                name: 'test.js'
+                type: 'folder',
+                name: 'env',
+                sub: [
+                  {
+                    type: 'config',
+                    name: 'development.js'
+                  },
+                  {
+                    type: 'config',
+                    name: 'production.js'
+                  },
+                  {
+                    type: 'config',
+                    name: 'staging.js'
+                  },
+                  {
+                    type: 'config',
+                    name: 'test.js'
+                  }
+                ]
               }
             ]
           },
@@ -183,7 +193,10 @@ function genNew () {
               "plugins": {
                 "blacklist": [
                   "pluginName"
-                ]
+                ],
+                "options": {
+                  "MongoDB": mongo === 'y'
+                }
               }
             }
           },

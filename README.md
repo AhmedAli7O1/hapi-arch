@@ -21,10 +21,13 @@ npm install -g hapi-arch
 hapi-arch generate new
 
 # follow instructions
+
 # go to the app directory
 cd app-name
+
 # install node dependencies
 npm install
+
 # you can start your app now by
 npm start
 ```
