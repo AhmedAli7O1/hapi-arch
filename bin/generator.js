@@ -137,6 +137,7 @@ function genNew () {
                       {
                         type: 'folder',
                         name: 'models',
+                        disabled: mongo !== 'y',
                         sub: [
                           {
                             type: 'model',
@@ -164,7 +165,8 @@ function genNew () {
                         sub: [
                           {
                             type: 'service',
-                            name: 'UserService.js'
+                            name: 'UserService.js',
+                            template: mongo === 'y' ? 'service.js' : 'service-no-mongo.js'
                           }
                         ]
                       },
@@ -211,6 +213,7 @@ function genNew () {
         ]
       }
     ];
+
     generators(process.cwd(), schema);
 
     process.exit(0);
