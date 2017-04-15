@@ -1,14 +1,20 @@
+const path = require('path');
 const co = require('co');
 const prompt = require('co-prompt');
 const os = require('os');
 const generators = require('../lib/generators');
 const archLog = require('../lib/archLog');
 const pkg = require('../package.json');
+const isExist = require('../lib/isExist');
+const getPath = require('../lib/getPath');
 
 module.exports = function (mode) {
   switch (mode) {
     case 'new':
       genNew();
+      break;
+    case 'controller':
+      genController();
       break;
     default:
       archLog.error(`generator type ${mode} not supported!`);
@@ -214,10 +220,49 @@ function genNew () {
       }
     ];
 
-    generators(process.cwd(), schema);
+    generators.generateSchema(process.cwd(), schema);
 
     process.exit(0);
 
   });
 
+}
+
+function genController () {
+  co(function *() {
+
+    let pluginName = '';
+
+    // read the plugin name
+    while (pluginName.length < 1) {
+      pluginName = yield prompt('enter the plugin name : ');
+      // check if the entered plugin is exist.
+      if (pluginName && !isExist('plugin', pluginName)) {
+        archLog.error(`no plugins found with the name ${pluginName}`);
+        pluginName = '';
+      }
+    }
+
+    let ctrlName = '';
+
+    // read the controller name
+    while (ctrlName.length < 1) {
+      ctrlName = yield prompt('enter the controller name : ');
+      if (ctrlName && isExist('controller', pluginName, ctrlName)){
+        archLog.error(`plugin with name ${ctrlName} is already exist`);
+        ctrlName = '';
+      }
+    }
+
+    // create the controller.
+    generators.generate({
+      location: getPath('controllers', pluginName),
+      name: ctrlName + '.js',
+      type: 'controller',
+      template: 'controller.js'
+    });
+
+    process.exit(0);
+
+  });
 }

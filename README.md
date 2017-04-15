@@ -6,6 +6,7 @@ mini framework for hapijs, using rails like convention.
 * [Introduction](#introduction)
 * [Features](#features)
 * [Usage](#usage)
+    * [Generators](#generators)
 * [Plugins](#plugins)
 * [Methods](#methods)
 * [Policies](#policies)
@@ -51,6 +52,12 @@ npm install
 # you can start your app now by
 npm start
 ```
+
+### Generators
+
+##### available generators
+ * controller
+ in the app main folder >> `hapi-arch generate controller`
 
 now you have a fully working REST server, with or without mongo support.
 you still have control over your server configuration in the `index.js`.
