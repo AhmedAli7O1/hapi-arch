@@ -53,14 +53,17 @@ npm install
 npm start
 ```
 
+now you have a fully working REST server, with or without mongo support.
+you still have control over your server configuration in the `index.js`.
+
 ### Generators
 
 ##### available generators
- * controller
- in the app main folder >> `hapi-arch generate controller`
-
-now you have a fully working REST server, with or without mongo support.
-you still have control over your server configuration in the `index.js`.
+    
+```   
+hapi-arch generate new
+hapi-arch generate controller
+```    
 
 ### Plugins
 a plugin is considered a new feature, you can add new plugin by creating new folder under `app/api`
