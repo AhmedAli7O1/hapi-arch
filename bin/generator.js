@@ -2,11 +2,13 @@ const path = require('path');
 const co = require('co');
 const prompt = require('co-prompt');
 const os = require('os');
+const _ = require('lodash');
 const generators = require('../lib/generators');
 const archLog = require('../lib/archLog');
 const pkg = require('../package.json');
 const isExist = require('../lib/isExist');
 const getPath = require('../lib/getPath');
+const archConfig = require('../lib/archConfig')();
 
 module.exports = function (mode) {
   switch (mode) {
@@ -15,6 +17,12 @@ module.exports = function (mode) {
       break;
     case 'controller':
       genController();
+      break;
+    case 'service':
+      genService();
+      break;
+    case 'model':
+      genModel();
       break;
     default:
       archLog.error(`generator type ${mode} not supported!`);
@@ -136,7 +144,8 @@ function genNew () {
                         sub: [
                           {
                             type: 'controller',
-                            name: 'UserController.js'
+                            name: 'UserController.js',
+                            template: 'controller-new.js'
                           }
                         ]
                       },
@@ -147,7 +156,8 @@ function genNew () {
                         sub: [
                           {
                             type: 'model',
-                            name: 'User.js'
+                            name: 'User.js',
+                            template: 'model-new.js'
                           }
                         ]
                       },
@@ -172,7 +182,7 @@ function genNew () {
                           {
                             type: 'service',
                             name: 'UserService.js',
-                            template: mongo === 'y' ? 'service.js' : 'service-no-mongo.js'
+                            template: mongo === 'y' ? 'service-new-mongo.js' : 'service-new.js'
                           }
                         ]
                       },
@@ -201,10 +211,10 @@ function genNew () {
               "plugins": {
                 "blacklist": [
                   "pluginName"
-                ],
-                "options": {
-                  "MongoDB": mongo === 'y'
-                }
+                ]
+              },
+              "options": {
+                "MongoDB": mongo === 'y'
               }
             }
           },
@@ -231,6 +241,100 @@ function genNew () {
 function genController () {
   co(function *() {
 
+    // read the plugin name
+    let pluginName = yield askPluginNameToGen();
+
+    let ctrlName = '';
+
+    // read the controller name
+    while (ctrlName.length < 1) {
+      ctrlName = yield prompt('enter the controller name : ');
+      if (ctrlName && isExist('controller', pluginName, ctrlName)){
+        archLog.error(`controller with name ${ctrlName} is already exist`);
+        ctrlName = '';
+      }
+    }
+
+    // create the controller.
+    generators.generate({
+      location: getPath('controllers', pluginName),
+      name: ctrlName + '.js',
+      type: 'controller'
+    });
+
+    process.exit(0);
+
+  });
+}
+
+function genService () {
+  co(function *() {
+
+    let pluginName = yield askPluginNameToGen();
+
+    let serviceName = '';
+
+    // read the service name
+    while (serviceName.length < 1) {
+      serviceName = yield prompt('enter the service name : ');
+      if (serviceName && isExist('service', pluginName, serviceName)){
+        archLog.error(`service with name ${serviceName} is already exist`);
+        serviceName = '';
+      }
+    }
+
+console.log(getPath('services', pluginName));
+    // create the service.
+    generators.generate({
+      location: getPath('services', pluginName),
+      name: serviceName + '.js',
+      type: 'service'
+    });
+
+
+    process.exit(0);
+
+  });
+}
+
+function genModel () {
+  co(function *() {
+
+    let mongoEnabled = _.get(archConfig, 'options.MongoDB');
+
+    if (!mongoEnabled) {
+      archLog.error('sorry, mongoose support is disabled!');
+      process.exit(1);
+    }
+
+    let pluginName = yield askPluginNameToGen();
+
+    let modelName = '';
+
+    // read the model name
+    while (modelName.length < 1) {
+      modelName = yield prompt('enter the model name : ');
+      if (modelName && isExist('model', pluginName, modelName)){
+        archLog.error(`model with name ${modelName} is already exist`);
+        modelName = '';
+      }
+    }
+
+    // create the model.
+    generators.generate({
+      location: getPath('models', pluginName),
+      name: modelName + '.js',
+      type: 'model'
+    });
+
+    process.exit(0);
+
+  });
+}
+
+function askPluginNameToGen () {
+  return co(function *() {
+
     let pluginName = '';
 
     // read the plugin name
@@ -243,26 +347,7 @@ function genController () {
       }
     }
 
-    let ctrlName = '';
-
-    // read the controller name
-    while (ctrlName.length < 1) {
-      ctrlName = yield prompt('enter the controller name : ');
-      if (ctrlName && isExist('controller', pluginName, ctrlName)){
-        archLog.error(`plugin with name ${ctrlName} is already exist`);
-        ctrlName = '';
-      }
-    }
-
-    // create the controller.
-    generators.generate({
-      location: getPath('controllers', pluginName),
-      name: ctrlName + '.js',
-      type: 'controller',
-      template: 'controller.js'
-    });
-
-    process.exit(0);
+    return pluginName;
 
   });
 }
