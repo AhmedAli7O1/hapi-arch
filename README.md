@@ -65,6 +65,8 @@ hapi-arch generate new
 hapi-arch generate controller
 hapi-arch generate model
 hapi-arch generate service
+hapi-arch generate policy
+hapi-arch generate method
 ```    
 
 ### Plugins
