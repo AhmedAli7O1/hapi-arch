@@ -24,6 +24,12 @@ module.exports = function (mode) {
     case 'model':
       genModel();
       break;
+    case 'policy':
+      genPolicy();
+      break;
+    case 'method':
+      genMethod();
+      break;
     default:
       archLog.error(`generator type ${mode} not supported!`);
       break;
@@ -325,6 +331,58 @@ function genModel () {
       location: getPath('models', pluginName),
       name: modelName + '.js',
       type: 'model'
+    });
+
+    process.exit(0);
+
+  });
+}
+
+function genPolicy () {
+  co(function *() {
+
+    let policyName = '';
+
+    // read the policy name
+    while (policyName.length < 1) {
+      policyName = yield prompt('enter the policy name : ');
+      if (policyName && isExist('policy', null, policyName)){
+        archLog.error(`policy with name ${policyName} is already exist`);
+        policyName = '';
+      }
+    }
+
+    // create the policy.
+    generators.generate({
+      location: getPath('policies'),
+      name: policyName + '.js',
+      type: 'policy'
+    });
+
+    process.exit(0);
+
+  });
+}
+
+function genMethod () {
+  co(function *() {
+
+    let methodName = '';
+
+    // read the method name
+    while (methodName.length < 1) {
+      methodName = yield prompt('enter the method name : ');
+      if (methodName && isExist('method', null, methodName)){
+        archLog.error(`method with name ${methodName} is already exist`);
+        methodName = '';
+      }
+    }
+
+    // create the method.
+    generators.generate({
+      location: getPath('methods'),
+      name: methodName + '.js',
+      type: 'method'
     });
 
     process.exit(0);
