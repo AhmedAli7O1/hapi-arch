@@ -1,16 +1,19 @@
+const fs = require('fs');
 const path = require('path');
 const co = require('co');
 const prompt = require('co-prompt');
 const os = require('os');
 const _ = require('lodash');
-const generators = require('../lib/generators');
 const archLog = require('../lib/archLog');
 const pkg = require('../package.json');
 const isExist = require('../lib/isExist');
 const getPath = require('../lib/getPath');
 const archConfig = require('../lib/archConfig')();
+const Generator = require('../lib/generator');
+const generator = new Generator();
 
 module.exports = function (mode) {
+
   switch (mode) {
     case 'new':
       genNew();
@@ -36,7 +39,7 @@ module.exports = function (mode) {
   }
 };
 
-function genNew () {
+function genNew() {
 
   // take the user input.
   co(function *() {
@@ -94,149 +97,160 @@ function genNew () {
     }
 
     // generate the app structure.
-    const schema = [
-      {
-        type: 'folder',
-        name: appName,
-        sub: [
-          {
-            type: 'json',
-            name: 'package',
-            data: appPkg
-          },
-          {
-            type: 'folder',
-            name: 'config',
-            sub: [
-              {
-                type: 'folder',
-                name: 'env',
-                sub: [
-                  {
-                    type: 'config',
-                    name: 'development.js'
-                  },
-                  {
-                    type: 'config',
-                    name: 'production.js'
-                  },
-                  {
-                    type: 'config',
-                    name: 'staging.js'
-                  },
-                  {
-                    type: 'config',
-                    name: 'test.js'
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            type: 'folder',
-            name: 'app',
-            sub: [
-              {
-                type: 'folder',
-                name: 'api',
-                sub: [
-                  {
-                    type: 'folder',
-                    name: 'pluginOne',
-                    sub: [
-                      {
-                        type: 'folder',
-                        name: 'controllers',
-                        sub: [
-                          {
-                            type: 'controller',
-                            name: 'UserController.js',
-                            template: 'controller-new.js'
-                          }
-                        ]
-                      },
-                      {
-                        type: 'folder',
-                        name: 'models',
-                        disabled: mongo !== 'y',
-                        sub: [
-                          {
-                            type: 'model',
-                            name: 'User.js',
-                            template: 'model-new.js'
-                          }
-                        ]
-                      },
-                      {
-                        type: 'folder',
-                        name: 'schema',
-                        sub: [
-                          {
-                            type: 'schema',
-                            name: 'GetSchema.js'
-                          },
-                          {
-                            type: 'schema',
-                            name: 'PostSchema.js'
-                          }
-                        ]
-                      },
-                      {
-                        type: 'folder',
-                        name: 'services',
-                        sub: [
-                          {
-                            type: 'service',
-                            name: 'UserService.js',
-                            template: mongo === 'y' ? 'service-new-mongo.js' : 'service-new.js'
-                          }
-                        ]
-                      },
-                      {
-                        type: 'routes',
-                        name: 'routes.js'
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                type: 'folder',
-                name: 'methods'
-              },
-              {
-                type: 'folder',
-                name: 'policies'
-              }
-            ]
-          },
-          {
-            type: 'json',
-            name: '.hapiarch',
-            data: {
-              "plugins": {
-                "blacklist": [
-                  "pluginName"
-                ]
-              },
-              "options": {
-                "MongoDB": mongo === 'y'
-              }
+    const schema = {
+      type: 'folder',
+      name: appName,
+      location: process.cwd(),
+      sub: [
+        {
+          type: 'json',
+          name: 'package',
+          data: appPkg
+        },
+        {
+          type: 'folder',
+          name: 'config',
+          sub: [
+            {
+              type: 'folder',
+              name: 'env',
+              sub: [
+                {
+                  type: 'file',
+                  template: 'config',
+                  name: 'development'
+                },
+                {
+                  type: 'file',
+                  template: 'config',
+                  name: 'production'
+                },
+                {
+                  type: 'file',
+                  template: 'config',
+                  name: 'staging'
+                },
+                {
+                  type: 'file',
+                  template: 'config',
+                  name: 'test'
+                }
+              ]
             }
-          },
-          {
-            type: 'index',
-            name: 'index.js'
-          },
-          {
-            type: 'thirdParty',
-            name: 'thirdParty.js'
+          ]
+        },
+        {
+          type: 'folder',
+          name: 'app',
+          sub: [
+            {
+              type: 'folder',
+              name: 'api',
+              sub: [
+                {
+                  type: 'folder',
+                  name: 'pluginOne',
+                  sub: [
+                    {
+                      type: 'folder',
+                      name: 'controllers',
+                      sub: [
+                        {
+                          type: 'file',
+                          name: 'UserController',
+                          template: 'controller-new'
+                        }
+                      ]
+                    },
+                    {
+                      type: 'folder',
+                      name: 'models',
+                      disabled: mongo !== 'y',
+                      sub: [
+                        {
+                          type: 'file',
+                          name: 'User',
+                          template: 'model-new'
+                        }
+                      ]
+                    },
+                    {
+                      type: 'folder',
+                      name: 'schema',
+                      sub: [
+                        {
+                          type: 'file',
+                          name: 'GetSchema',
+                          template: 'schema'
+                        },
+                        {
+                          type: 'file',
+                          name: 'PostSchema',
+                          template: 'schema'
+                        }
+                      ]
+                    },
+                    {
+                      type: 'folder',
+                      name: 'services',
+                      sub: [
+                        {
+                          type: 'file',
+                          name: 'UserService',
+                          template: mongo === 'y' ? 'service-new-mongo' : 'service-new'
+                        }
+                      ]
+                    },
+                    {
+                      type: 'file',
+                      name: 'routes',
+                      template: 'routes'
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              type: 'folder',
+              name: 'methods'
+            },
+            {
+              type: 'folder',
+              name: 'policies'
+            }
+          ]
+        },
+        {
+          type: 'json',
+          name: '.hapiarch',
+          data: {
+            "plugins": {
+              "blacklist": [
+                "pluginName"
+              ]
+            },
+            "options": {
+              "MongoDB": mongo === 'y'
+            }
           }
-        ]
-      }
-    ];
+        },
+        {
+          type: 'file',
+          name: 'index',
+          template: 'index'
+        },
+        {
+          type: 'file',
+          name: 'thirdParty',
+          template: 'thirdParty'
+        }
+      ]
+    };
 
-    generators.generateSchema(process.cwd(), schema);
+    generate(schema);
+
+    archLog.hint('Done! now write the following to the console.');
+    archLog.hint(`cd ${appName} && npm install`);
 
     process.exit(0);
 
@@ -244,7 +258,7 @@ function genNew () {
 
 }
 
-function genController () {
+function genController() {
   co(function *() {
 
     // read the plugin name
@@ -255,17 +269,18 @@ function genController () {
     // read the controller name
     while (ctrlName.length < 1) {
       ctrlName = yield prompt('enter the controller name : ');
-      if (ctrlName && isExist('controller', pluginName, ctrlName)){
+      if (ctrlName && isExist('controller', pluginName, ctrlName)) {
         archLog.error(`controller with name ${ctrlName} is already exist`);
         ctrlName = '';
       }
     }
 
     // create the controller.
-    generators.generate({
+    generate({
+      type: 'file',
       location: getPath('controllers', pluginName),
-      name: ctrlName + '.js',
-      type: 'controller'
+      name: ctrlName,
+      template: 'controller'
     });
 
     process.exit(0);
@@ -273,7 +288,7 @@ function genController () {
   });
 }
 
-function genService () {
+function genService() {
   co(function *() {
 
     let pluginName = yield askPluginNameToGen();
@@ -283,18 +298,18 @@ function genService () {
     // read the service name
     while (serviceName.length < 1) {
       serviceName = yield prompt('enter the service name : ');
-      if (serviceName && isExist('service', pluginName, serviceName)){
+      if (serviceName && isExist('service', pluginName, serviceName)) {
         archLog.error(`service with name ${serviceName} is already exist`);
         serviceName = '';
       }
     }
 
-console.log(getPath('services', pluginName));
     // create the service.
-    generators.generate({
+    generate({
+      type: 'file',
       location: getPath('services', pluginName),
-      name: serviceName + '.js',
-      type: 'service'
+      name: serviceName,
+      template: 'service'
     });
 
 
@@ -303,7 +318,7 @@ console.log(getPath('services', pluginName));
   });
 }
 
-function genModel () {
+function genModel() {
   co(function *() {
 
     let mongoEnabled = _.get(archConfig, 'options.MongoDB');
@@ -320,17 +335,18 @@ function genModel () {
     // read the model name
     while (modelName.length < 1) {
       modelName = yield prompt('enter the model name : ');
-      if (modelName && isExist('model', pluginName, modelName)){
+      if (modelName && isExist('model', pluginName, modelName)) {
         archLog.error(`model with name ${modelName} is already exist`);
         modelName = '';
       }
     }
 
     // create the model.
-    generators.generate({
+    generate({
+      type: 'file',
       location: getPath('models', pluginName),
-      name: modelName + '.js',
-      type: 'model'
+      name: modelName,
+      template: 'model'
     });
 
     process.exit(0);
@@ -338,7 +354,7 @@ function genModel () {
   });
 }
 
-function genPolicy () {
+function genPolicy() {
   co(function *() {
 
     let policyName = '';
@@ -346,17 +362,18 @@ function genPolicy () {
     // read the policy name
     while (policyName.length < 1) {
       policyName = yield prompt('enter the policy name : ');
-      if (policyName && isExist('policy', null, policyName)){
+      if (policyName && isExist('policy', null, policyName)) {
         archLog.error(`policy with name ${policyName} is already exist`);
         policyName = '';
       }
     }
 
     // create the policy.
-    generators.generate({
+    generate({
+      type: 'file',
       location: getPath('policies'),
-      name: policyName + '.js',
-      type: 'policy'
+      name: policyName,
+      template: 'policy'
     });
 
     process.exit(0);
@@ -364,7 +381,7 @@ function genPolicy () {
   });
 }
 
-function genMethod () {
+function genMethod() {
   co(function *() {
 
     let methodName = '';
@@ -372,17 +389,18 @@ function genMethod () {
     // read the method name
     while (methodName.length < 1) {
       methodName = yield prompt('enter the method name : ');
-      if (methodName && isExist('method', null, methodName)){
+      if (methodName && isExist('method', null, methodName)) {
         archLog.error(`method with name ${methodName} is already exist`);
         methodName = '';
       }
     }
 
     // create the method.
-    generators.generate({
+    generate({
+      type: 'file',
       location: getPath('methods'),
-      name: methodName + '.js',
-      type: 'method'
+      name: methodName,
+      template: 'method'
     });
 
     process.exit(0);
@@ -390,7 +408,7 @@ function genMethod () {
   });
 }
 
-function askPluginNameToGen () {
+function askPluginNameToGen() {
   return co(function *() {
 
     let pluginName = '';
@@ -408,4 +426,14 @@ function askPluginNameToGen () {
     return pluginName;
 
   });
+}
+
+function generate (data) {
+  try {
+    generator.generate(data);
+  }
+  catch (e) {
+    archLog.error(e);
+    process.exit(1);
+  }
 }
