@@ -2,6 +2,8 @@
 
 mini framework for hapijs, using rails like convention.
 
+[![Known Vulnerabilities](https://snyk.io/test/npm/hapi-arch/badge.svg)](https://snyk.io/test/npm/hapi-arch)
+
 ## Table of Contents
 * [Introduction](#introduction)
 * [Features](#features)

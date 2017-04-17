@@ -1,6 +1,6 @@
 {
   "name": "hapi-arch",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "mini framework for hapijs",
   "author": "https://github.com/AhmedAli7O1",
   "dependencies": {
