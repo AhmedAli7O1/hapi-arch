@@ -64,6 +64,10 @@ function genNew() {
     let promptAuthor = yield prompt(`enter the app author (default ${author}) : `) || author;
     let mongo = yield prompt('do you want to include mongodb support using mongoose? (y) : ');
 
+    if (mongo === 'y') {
+      yield prompt('since you chosen to include mongoose support, you should setup a mongo instance before starting the server. (press enter)');
+    }
+
     const appPkg = {
       name: appName,
       version: promptVersion || version,

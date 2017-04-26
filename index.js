@@ -1,8 +1,9 @@
 'use strict';
 
+const archLog = require('./lib/archLog');
+
 module.exports = function (settings) {
 
-  const path = require('path');
   const co = require('co');
 
   /** SET GLOBALS */
@@ -44,7 +45,7 @@ module.exports = function (settings) {
 
       }
       catch (e) {
-        console.log(e);
+        archLog.error(e);
         process.exit(1);
       }
 
