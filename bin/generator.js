@@ -13,10 +13,12 @@ const Generator = require('../lib/generator');
 const generator = new Generator();
 
 module.exports = function (mode) {
-
   switch (mode) {
     case 'new':
       genNew();
+      break;
+    case 'plugin':
+      genPlugin();
       break;
     case 'controller':
       genController();
@@ -262,6 +264,99 @@ function genNew() {
 
 }
 
+function genPlugin () {
+  co(function *() {
+
+    let pluginName = '';
+
+    // read the plugin name
+    while (pluginName.length < 1) {
+      pluginName = yield prompt('enter the plugin name : ');
+      // check if the entered plugin is exist.
+      if (pluginName && isExist('plugin', pluginName)) {
+        archLog.error(`plugin found with the name ${pluginName}`);
+        pluginName = '';
+      }
+    }
+
+    let mongo = yield prompt('do you want to include mongodb support using mongoose? (y) : ');
+
+    if (mongo === 'y') {
+      yield prompt('since you chosen to include mongoose support, you should setup a mongo instance before starting the server. (press enter)');
+    }
+
+    const schema = {
+      type: 'folder',
+      name: pluginName,
+      location: path.join(process.cwd(), 'app', 'api'),
+      sub: [
+        {
+          type: 'folder',
+          name: 'controllers',
+          sub: [
+            {
+              type: 'file',
+              name: 'UserController',
+              template: 'controller-new'
+            }
+          ]
+        },
+        {
+          type: 'folder',
+          name: 'models',
+          disabled: mongo !== 'y',
+          sub: [
+            {
+              type: 'file',
+              name: 'User',
+              template: 'model-new'
+            }
+          ]
+        },
+        {
+          type: 'folder',
+          name: 'schema',
+          sub: [
+            {
+              type: 'file',
+              name: 'GetSchema',
+              template: 'schema'
+            },
+            {
+              type: 'file',
+              name: 'PostSchema',
+              template: 'schema'
+            }
+          ]
+        },
+        {
+          type: 'folder',
+          name: 'services',
+          sub: [
+            {
+              type: 'file',
+              name: 'UserService',
+              template: mongo === 'y' ? 'service-new-mongo' : 'service-new'
+            }
+          ]
+        },
+        {
+          type: 'file',
+          name: 'routes',
+          template: 'routes'
+        }
+      ]
+    };
+
+    generate(schema);
+
+    archLog.hint(`Done!`);
+
+    process.exit(0);
+
+  });
+}
+
 function genController() {
   co(function *() {
 
@@ -277,6 +372,17 @@ function genController() {
         archLog.error(`controller with name ${ctrlName} is already exist`);
         ctrlName = '';
       }
+    }
+
+    // if controllers folder not exist create it.
+    const controllersPath = getPath('controllers', pluginName);
+
+    if (!fs.existsSync(controllersPath)) {
+      generate({
+        type: 'folder',
+        name: 'controllers',
+        location: getPath('plugin', pluginName)
+      });
     }
 
     // create the controller.
@@ -308,6 +414,17 @@ function genService() {
       }
     }
 
+    // if services folder not exist create it.
+    const servicesPath = getPath('services', pluginName);
+
+    if (!fs.existsSync(servicesPath)) {
+      generate({
+        type: 'folder',
+        name: 'services',
+        location: getPath('plugin', pluginName)
+      });
+    }
+
     // create the service.
     generate({
       type: 'file',
@@ -325,12 +442,12 @@ function genService() {
 function genModel() {
   co(function *() {
 
-    let mongoEnabled = _.get(archConfig, 'options.MongoDB');
-
-    if (!mongoEnabled) {
-      archLog.error('sorry, mongoose support is disabled!');
-      process.exit(1);
-    }
+    // let mongoEnabled = _.get(archConfig, 'options.MongoDB');
+    //
+    // if (!mongoEnabled) {
+    //   archLog.error('sorry, mongoose support is disabled!');
+    //   process.exit(1);
+    // }
 
     let pluginName = yield askPluginNameToGen();
 
@@ -343,6 +460,17 @@ function genModel() {
         archLog.error(`model with name ${modelName} is already exist`);
         modelName = '';
       }
+    }
+
+    // if models folder not exist create it.
+    const modelsPath = getPath('models', pluginName);
+
+    if (!fs.existsSync(modelsPath)) {
+      generate({
+        type: 'folder',
+        name: 'models',
+        location: getPath('plugin', pluginName)
+      });
     }
 
     // create the model.

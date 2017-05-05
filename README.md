@@ -64,6 +64,7 @@ you still have control over your server configuration in the `index.js`.
     
 ```   
 hapi-arch generate new
+hapi-arch generate plugin
 hapi-arch generate controller
 hapi-arch generate model
 hapi-arch generate service
