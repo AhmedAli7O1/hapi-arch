@@ -1,5 +1,9 @@
 # hapi-arch
 
+[![NPM](https://nodei.co/npm/hapi-arch.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/hapi-arch/) 
+[![NPM](https://nodei.co/npm-dl/hapi-arch.png?height=2)](https://nodei.co/npm/hapi-arch/)
+
+
 mini framework for hapijs, using rails like convention.
 
 [![Known Vulnerabilities](https://snyk.io/test/npm/hapi-arch/badge.svg)](https://snyk.io/test/npm/hapi-arch)
