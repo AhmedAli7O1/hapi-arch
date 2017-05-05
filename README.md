@@ -1,11 +1,11 @@
 # hapi-arch
 
-[![NPM](https://nodei.co/npm/hapi-arch.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/hapi-arch/) 
-[![NPM](https://nodei.co/npm-dl/hapi-arch.png?height=2)](https://nodei.co/npm/hapi-arch/)
-
-
 mini framework for hapijs, using rails like convention.
 
+[![npm](https://img.shields.io/npm/v/hapi-arch.svg)]()
+[![npm](https://img.shields.io/npm/dt/hapi-arch.svg)]()
+[![Libraries.io for GitHub](https://img.shields.io/librariesio/github/AhmedAli7O1/hapi-arch.svg)]()
+[![Code Climate](https://img.shields.io/codeclimate/github/AhmedAli7O1/hapi-arch.svg)]()
 [![Known Vulnerabilities](https://snyk.io/test/npm/hapi-arch/badge.svg)](https://snyk.io/test/npm/hapi-arch)
 
 ## Table of Contents
