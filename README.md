@@ -1,4 +1,4 @@
-# hapi-arch
+# Hapi Arch
 
 mini framework for hapijs, using rails like convention.
 
