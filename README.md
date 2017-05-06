@@ -119,7 +119,7 @@ module.exports = new mongoose.Schema({
   name: String,
   age: Number 
 });
-``` 
+```  
   
 ### Services
 where your bussiness logic goes.
