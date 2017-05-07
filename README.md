@@ -7,7 +7,7 @@ mini framework for hapijs, using rails like convention.
 [![Libraries.io for GitHub](https://img.shields.io/librariesio/github/AhmedAli7O1/hapi-arch.svg)]()
 [![Code Climate](https://img.shields.io/codeclimate/github/AhmedAli7O1/hapi-arch.svg)]()
 [![Known Vulnerabilities](https://snyk.io/test/npm/hapi-arch/badge.svg)](https://snyk.io/test/npm/hapi-arch)
-
+ 
 ## Table of Contents
 * [Introduction](#introduction)
 * [Features](#features)
