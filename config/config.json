@@ -1,0 +1,6 @@
+{
+  "userConfig": "hapiArch.json",
+  "paths": {
+    "plugins": "app/api"
+  }
+}
