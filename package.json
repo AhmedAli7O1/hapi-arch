@@ -9,10 +9,12 @@
     "chalk": "^1.1.3",
     "co": "^4.6.0",
     "co-prompt": "^1.0.0",
+    "colors": "^1.1.2",
     "commander": "^2.9.0",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
-    "colors": "^1.1.2"
+    "pretty-error": "^2.1.0",
+    "verror": "^1.10.0"
   },
   "bin": {
     "hapi-arch": "./bin/index.js"
@@ -29,5 +31,8 @@
     "architecture",
     "framework"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^3.19.0"
+  }
 }
