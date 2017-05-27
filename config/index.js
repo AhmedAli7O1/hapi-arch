@@ -6,6 +6,10 @@
  * also user config will override the local once.
  */
 
-const localConfig = require('./config.json');
+const _ = require("lodash");
+const localConfig = require("./config.json");
+const userConfig = require("./userConfig");
+
+_.merge(localConfig, userConfig);
 
 module.exports = localConfig;

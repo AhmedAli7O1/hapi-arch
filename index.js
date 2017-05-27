@@ -1,62 +1,57 @@
-'use strict';
+"use strict";
 
-const archLog = require('./lib/archLog');
+const archLog = require("./lib/archLog");
+const locations = require("./lib/locations");
+const archFs = require("./lib/archFs");
+const ERRORS = require("./lib/text/errors.json");
+const config = require("./config");
 
-module.exports = function (settings) {
-
-  const co = require('co');
+module.exports = function () {
 
   /** SET GLOBALS */
-  require('./lib/globals');
+  require("./lib/globals");
   /** LOAD DIRECTORIES */
-  require('./lib/dirs');
+  require("./lib/dirs");
   /** LOAD CONFIGURATIONS */
-  require('./lib/configLoader');
+  require("./lib/configLoader");
 
-  const register = function (server, options, next) {
+  const pluginsPath =
+    archFs.join(
+      locations.getAppMainDir() || process.cwd(),
+      archFs.formatPath(config.paths.plugins)
+    );
 
-    co(function *() {
+  try {
+    const pluginsLoader = require("./lib/plugins");
+    const plugins = pluginsLoader(pluginsPath) || [];
 
-      try {
+    if (plugins.length) {
 
-        // check if the user need mongo.
-        const mongo = _.get(settings, 'config.options.MongoDB');
-        let db = null;
-        if (mongo) {
-          const mongooseLib = require('./lib/mongooseLib');
-          db = yield mongooseLib.createConnection();
-        }
+      const register = function (server, options, next) {
 
-        /** LOAD METHODS */
-        const methods = require('./lib/methodsLoader');
-        /** LOAD POLICIES */
-        const policies = require('./lib/policiesLoader');
-        /** LOAD PLUGINS */
-        const inject = {
-          server: server,
-          options: options,
-          db: db,
-          methods: methods,
-          policies: policies
-        };
+        server.register(plugins);
+        archLog.info(`${plugins.length} ${ plugins.length > 1 ? "Plugins" : "Plugin" } Loaded!`);
 
-        require('./lib/pluginsLoader')(inject, settings);
-        return next();
+        archLog.info(`Environment >> ${ENV}`);
+        next();
 
-      }
-      catch (e) {
-        archLog.error(e);
-        process.exit(1);
-      }
+      };
 
-    });
+      register.attributes = {
+        pkg: require("./package.json")
+      };
 
-  };
+      return register;
 
-  register.attributes = {
-    pkg: require('./package.json')
-  };
-
-  return register;
+    }
+    else {
+      archLog.error(ERRORS.NO_PLUGINS);
+      process.exit(1);
+    }
+  }
+  catch (err) {
+    archLog.error(err);
+    process.exit(1);
+  }
 
 };

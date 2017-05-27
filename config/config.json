@@ -1,6 +1,10 @@
 {
   "userConfig": "arch.json",
   "paths": {
-    "plugins": "app/api"
+    "plugins": "app/api",
+    "routes": "routes.js"
+  },
+  "plugins": {
+    "blacklist": []
   }
 }

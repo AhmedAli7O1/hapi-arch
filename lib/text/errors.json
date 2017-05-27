@@ -2,5 +2,8 @@
   "TITLES": {
     "PLUGINS_LOADER": "Plugin Loader Error"
   },
-  "NO_ROUTES": "no routes configurations found."
+  "NO_ROUTES": "no routes configurations found.",
+  "INVALID_PLUGINS_PATH": "invalid plugins path",
+  "NO_PLUGINS": "no plugins found",
+  "NO_CONFIG": "no user configuration found!"
 }
