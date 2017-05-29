@@ -5,5 +5,6 @@
   "NO_ROUTES": "no routes configurations found.",
   "INVALID_PLUGINS_PATH": "invalid plugins path",
   "NO_PLUGINS": "no plugins found",
-  "NO_CONFIG": "no user configuration found!"
+  "NO_CONFIG": "no user configuration found!",
+  "NO_APP_CONFIG_DIR": "app configurations directory is missing!"
 }

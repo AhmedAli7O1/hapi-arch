@@ -8,7 +8,7 @@ const archLog = require('../lib/archLog');
 const pkg = require('../package.json');
 const isExist = require('../lib/isExist');
 const getPath = require('../lib/getPath');
-const archConfig = require('../lib/archConfig')();
+const locations = require("../lib/locations");
 const Generator = require('../lib/generator');
 const generator = new Generator();
 
@@ -52,22 +52,22 @@ function genNew() {
         author = os.userInfo().username;
 
     while (appName.length < 1) {
-      appName = yield prompt('enter the app name: ');
+      appName = yield prompt("enter the app name: ");
       if (appName.length > 1) {
         appName = appName.toLowerCase();
-        appName = appName.replace(' ', '-');
+        appName = appName.replace(" ", "-");
         let ans = yield prompt(`your app name will be ${appName} is that okay? (y): `);
-        if (ans.toLowerCase() !== 'y') appName = '';
+        if (ans.toLowerCase() !== "y") appName = "";
       }
     }
 
-    let promptDescription = yield prompt('enter the app description: ');
-    let promptVersion = yield prompt('enter the app version (default 1.0.0) : ');
+    let promptDescription = yield prompt("enter the app description: ");
+    let promptVersion = yield prompt("enter the app version (default 1.0.0) : ");
     let promptAuthor = yield prompt(`enter the app author (default ${author}) : `) || author;
-    let mongo = yield prompt('do you want to include mongodb support using mongoose? (y) : ');
+    let mongo = yield prompt("do you want to include mongodb support using mongoose? (y) : ");
 
-    if (mongo === 'y') {
-      yield prompt('since you chosen to include mongoose support, you should setup a mongo instance before starting the server. (press enter)');
+    if (mongo === "y") {
+      yield prompt("since you chosen to include mongoose support, you should setup a mongo instance before starting the server. (press enter)");
     }
 
     const appPkg = {
@@ -91,57 +91,105 @@ function genNew() {
     };
 
     // check if the user want to add mongoose.
-    if (mongo === 'y') appPkg.dependencies['mongoose'] = '*';
+    if (mongo === "y") appPkg.dependencies["mongoose"] = "*";
 
     console.log(JSON.stringify(appPkg, null, 2));
-    let ans = yield prompt('this is your package.json file looks like, is that okay? (y) : ');
+    let ans = yield prompt("this is your package.json file looks like, is that okay? (y) : ");
 
 
-    if (ans !== 'y') {
-      archLog.error('app creation canceled!');
+    if (ans !== "y") {
+      archLog.error("app creation canceled!");
       process.exit(0);
     }
 
     // generate the app structure.
     const schema = {
-      type: 'folder',
+      type: "folder",
       name: appName,
       location: process.cwd(),
       sub: [
         {
-          type: 'json',
-          name: 'package',
+          type: "json",
+          name: "package",
           data: appPkg
         },
         {
-          type: 'folder',
-          name: 'config',
+          type: "folder",
+          name: "config",
           sub: [
             {
-              type: 'folder',
-              name: 'env',
+              type: "folder",
+              name: "development",
               sub: [
                 {
-                  type: 'file',
-                  template: 'config',
-                  name: 'development'
+                  type: "file",
+                  template: "config",
+                  name: "api"
                 },
                 {
-                  type: 'file',
-                  template: 'config',
-                  name: 'production'
-                },
-                {
-                  type: 'file',
-                  template: 'config',
-                  name: 'staging'
-                },
-                {
-                  type: 'file',
-                  template: 'config',
-                  name: 'test'
+                  type: "file",
+                  template: mongo === "y" ? "database" : "database-empty",
+                  name: "database"
                 }
               ]
+            },
+            {
+              type: "folder",
+              name: "staging",
+              sub: [
+                {
+                  type: "file",
+                  template: "config",
+                  name: "api"
+                },
+                {
+                  type: "file",
+                  template: mongo === "y" ? "database" : "database-empty",
+                  name: "database"
+                }
+              ]
+            },
+            {
+              type: "folder",
+              name: "production",
+              sub: [
+                {
+                  type: "file",
+                  template: "config",
+                  name: "api"
+                },
+                {
+                  type: "file",
+                  template: mongo === "y" ? "database" : "database-empty",
+                  name: "database"
+                }
+              ]
+            },
+            {
+              type: "folder",
+              name: "test",
+              sub: [
+                {
+                  type: "file",
+                  template: "config",
+                  name: "api"
+                },
+                {
+                  type: "file",
+                  template: mongo === "y" ? "database" : "database-empty",
+                  name: "database"
+                }
+              ]
+            },
+            {
+              type: "file",
+              name: "api",
+              template: "config"
+            },
+            {
+              type: "file",
+              name: "database",
+              template: "database"
             }
           ]
         },
@@ -218,32 +266,25 @@ function genNew() {
             },
             {
               type: 'folder',
-              name: 'methods'
-            },
-            {
-              type: 'folder',
               name: 'policies'
             }
           ]
         },
         {
-          type: 'json',
-          name: '.hapiarch',
+          type: "json",
+          name: "arch",
           data: {
             "plugins": {
               "blacklist": [
                 "pluginName"
               ]
-            },
-            "options": {
-              "MongoDB": mongo === 'y'
             }
           }
         },
         {
-          type: 'file',
-          name: 'index',
-          template: 'index'
+          type: "file",
+          name: "index",
+          template: "index"
         },
         {
           type: 'file',
@@ -255,7 +296,7 @@ function genNew() {
 
     generate(schema);
 
-    archLog.hint('Done! now write the following to the console.');
+    archLog.hint("Done! now do");
     archLog.hint(`cd ${appName} && npm install`);
 
     process.exit(0);
@@ -288,7 +329,7 @@ function genPlugin () {
     const schema = {
       type: 'folder',
       name: pluginName,
-      location: path.join(process.cwd(), 'app', 'api'),
+      location: path.join(locations.getAppMainDir(), 'app', 'api'),
       sub: [
         {
           type: 'folder',
