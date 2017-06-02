@@ -10,8 +10,8 @@ const moment = require("moment");
 const _ = require("lodash");
 const env = process.env.NODE_ENV || "development";
 const appConfig = require("./lib/config")(env);
-const database = require("./lib/database");
 const pkg = require("./package.json");
+const archServices = require("./lib/archServices");
 
 module.exports = function () {
 
@@ -29,16 +29,13 @@ module.exports = function () {
 
       try {
 
-        if (appConfig.database) {
-          let db = yield database(appConfig.database);
-          if (db) {
-            archLog.info("Connected to DB!");
-          }
+        if (config.archServices && config.archServices.length) {
+          yield archServices(config.archServices, appConfig);
         }
 
         const pluginsPath =
           archFs.join(
-            locations.getAppMainDir() || process.cwd(),
+            locations.APP_MIN_DIR || process.cwd(),
             archFs.formatPath(config.paths.plugins)
           );
 

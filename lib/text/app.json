@@ -3,5 +3,6 @@
   "NAME_CONSOLE": "[ Hapi Arch ]",
   "ERROR_TITLE": "(Error)",
   "PLUGINS_LOADER": "(Plugins Loader)",
-  "PLUGINS_LOADER_CONSOLE": "[ Plugins Loader ]"
+  "ARCH_PLUGINS": "(Arch Plugins)",
+  "ARCH_SERVICE": "(Arch Service)"
 }

@@ -3,7 +3,9 @@
   "paths": {
     "plugins": "app/api",
     "routes": "routes.js",
-    "config": "config"
+    "config": "config",
+    "archServices": "archServices",
+    "archPlugins": "archPlugins"
   },
   "plugins": {
     "blacklist": []

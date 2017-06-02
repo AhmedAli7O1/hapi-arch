@@ -5,7 +5,7 @@ const archFs = require("../lib/archFs");
 const archLog = require("../lib/archLog");
 const ERRORS = require("../lib/text/errors.json");
 
-const userConfigPath = locations.getUserConfigPath();
+const userConfigPath = locations.USER_CONFIG;
 
 let userConfig = {};
 
