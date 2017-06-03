@@ -5,7 +5,9 @@
     "routes": "routes.js",
     "config": "config",
     "archServices": "archServices",
-    "archPlugins": "archPlugins"
+    "archPlugins": "archPlugins",
+    "thirdParties": "thirdParty.js",
+    "bootstrap": "bootstrap.js"
   },
   "plugins": {
     "blacklist": []

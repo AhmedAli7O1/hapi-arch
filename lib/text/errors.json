@@ -11,5 +11,6 @@
   "AP_CONFIG_NOT_FOUND": "configuration not found!",
   "AS_CONFIG_NOT_FOUND": "configuration not found!",
   "AP_REQUIRED_ARGS": "the following information is required to load this Arch Plugin",
-  "AS_REQUIRED_ARGS": "the following information is required to load this Arch Service"
+  "AS_REQUIRED_ARGS": "the following information is required to load this Arch Service",
+  "CONN_CONFIG_NOT_FOUND": "server connection configurations not found!"
 }
