@@ -14,6 +14,7 @@ const pkg = require("./package.json");
 const archServices = require("./lib/archServices");
 const createServer = require("./lib/server");
 const pluginsLoader = require("./lib/plugins");
+const archPluginsUtils = require("./lib/archPlugins/utils");
 
 function loadPlugins (config) {
   const pluginsPath =
@@ -30,6 +31,10 @@ function createArch (config, appConfig) {
 
     if (config.archServices && config.archServices.length) {
       yield archServices(config.archServices, appConfig);
+    }
+
+    if (config.archPlugins && config.archPlugins.length) {
+      config.archPlugins = yield archPluginsUtils.validatePlugins(config.archPlugins);
     }
 
     const plugins = yield loadPlugins(config, appConfig);
