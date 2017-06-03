@@ -119,77 +119,29 @@ function genNew() {
           sub: [
             {
               type: "folder",
-              name: "development",
-              sub: [
-                {
-                  type: "file",
-                  template: "config",
-                  name: "api"
-                },
-                {
-                  type: "file",
-                  template: mongo === "y" ? "database" : "database-empty",
-                  name: "database"
-                }
-              ]
+              name: "development"
             },
             {
               type: "folder",
-              name: "staging",
-              sub: [
-                {
-                  type: "file",
-                  template: "config",
-                  name: "api"
-                },
-                {
-                  type: "file",
-                  template: mongo === "y" ? "database" : "database-empty",
-                  name: "database"
-                }
-              ]
+              name: "staging"
             },
             {
               type: "folder",
-              name: "production",
-              sub: [
-                {
-                  type: "file",
-                  template: "config",
-                  name: "api"
-                },
-                {
-                  type: "file",
-                  template: mongo === "y" ? "database" : "database-empty",
-                  name: "database"
-                }
-              ]
+              name: "production"
             },
             {
               type: "folder",
-              name: "test",
-              sub: [
-                {
-                  type: "file",
-                  template: "config",
-                  name: "api"
-                },
-                {
-                  type: "file",
-                  template: mongo === "y" ? "database" : "database-empty",
-                  name: "database"
-                }
-              ]
+              name: "test"
             },
             {
               type: "file",
-              name: "api",
-              template: "config"
+              name: "connection",
+              template: "connection"
             },
             {
               type: "file",
-              name: "database",
-              template: "database"
+              name: "mongo",
+              template: "mongo"
             }
           ]
         },
@@ -278,7 +230,9 @@ function genNew() {
               "blacklist": [
                 "pluginName"
               ]
-            }
+            },
+            "archServices": (mongo === "y" ? ["mongo"]: []),
+            "archPlugins": (mongo === "y" ? ["mongoose"]: [])
           }
         },
         {
@@ -287,10 +241,16 @@ function genNew() {
           template: "index"
         },
         {
-          type: 'file',
-          name: 'thirdParty',
-          template: 'thirdParty'
-        }
+          type: "file",
+          name: "thirdParty",
+          template: "thirdParty"
+        },
+        {
+          type: "file",
+          name: "bootstrap",
+          template: "bootstrap"
+        },
+
       ]
     };
 
@@ -329,7 +289,7 @@ function genPlugin () {
     const schema = {
       type: 'folder',
       name: pluginName,
-      location: path.join(locations.getAppMainDir(), 'app', 'api'),
+      location: path.join(locations.APP_MIN_DIR, 'app', 'api'),
       sub: [
         {
           type: 'folder',
