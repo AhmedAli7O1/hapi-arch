@@ -2,6 +2,7 @@
 
 [hapi](https://github.com/hapijs/hapi) Convention Control framework
 
+[![Build Status](https://travis-ci.org/AhmedAli7O1/hapi-arch.svg?branch=master)](https://travis-ci.org/AhmedAli7O1/hapi-arch)
 [![npm](https://img.shields.io/npm/v/hapi-arch.svg)]()
 [![npm](https://img.shields.io/npm/dt/hapi-arch.svg)]()
 [![Libraries.io for GitHub](https://img.shields.io/librariesio/github/AhmedAli7O1/hapi-arch.svg)]()
