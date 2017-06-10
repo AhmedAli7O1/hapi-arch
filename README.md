@@ -2,6 +2,7 @@
 
 [hapi](https://github.com/hapijs/hapi) Convention Control framework
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/6504095b7b6547e88d8bb06c0001104a)](https://www.codacy.com/app/AhmedAli7O1/hapi-arch?utm_source=github.com&utm_medium=referral&utm_content=AhmedAli7O1/hapi-arch&utm_campaign=badger)
 [![Build Status](https://travis-ci.org/AhmedAli7O1/hapi-arch.svg?branch=master)](https://travis-ci.org/AhmedAli7O1/hapi-arch)
 [![npm](https://img.shields.io/npm/v/hapi-arch.svg)]()
 [![npm](https://img.shields.io/npm/dt/hapi-arch.svg)]()
