@@ -1,6 +1,15 @@
 {
-  "userConfig": "hapiArch.json",
+  "userConfig": "arch.json",
   "paths": {
-    "plugins": "app/api"
+    "plugins": "app/api",
+    "routes": "routes.js",
+    "config": "config",
+    "archServices": "archServices",
+    "archPlugins": "archPlugins",
+    "thirdParties": "thirdParty.js",
+    "bootstrap": "bootstrap.js"
+  },
+  "plugins": {
+    "blacklist": []
   }
 }

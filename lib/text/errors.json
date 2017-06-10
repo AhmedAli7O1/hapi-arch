@@ -1,0 +1,16 @@
+{
+  "TITLES": {
+    "PLUGINS_LOADER": "Plugin Loader Error"
+  },
+  "NO_ROUTES": "no routes configurations found.",
+  "INVALID_PLUGINS_PATH": "invalid plugins path",
+  "NO_PLUGINS": "no plugins found",
+  "NO_CONFIG": "no user configuration found!",
+  "NO_APP_CONFIG_DIR": "app configurations directory is missing!",
+  "AP_COMP_NOT_FOUND": "targeted component not found!",
+  "AP_CONFIG_NOT_FOUND": "configuration not found!",
+  "AS_CONFIG_NOT_FOUND": "configuration not found!",
+  "AP_REQUIRED_ARGS": "the following information is required to load this Arch Plugin",
+  "AS_REQUIRED_ARGS": "the following information is required to load this Arch Service",
+  "CONN_CONFIG_NOT_FOUND": "server connection configurations not found!"
+}

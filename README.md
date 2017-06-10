@@ -1,6 +1,6 @@
 # Hapi Arch
 
-mini framework for hapijs, using rails like convention.
+[hapi](https://github.com/hapijs/hapi) Convention Control framework
 
 [![Build Status](https://travis-ci.org/AhmedAli7O1/hapi-arch.svg?branch=master)](https://travis-ci.org/AhmedAli7O1/hapi-arch)
 [![npm](https://img.shields.io/npm/v/hapi-arch.svg)]()
@@ -8,34 +8,45 @@ mini framework for hapijs, using rails like convention.
 [![Libraries.io for GitHub](https://img.shields.io/librariesio/github/AhmedAli7O1/hapi-arch.svg)]()
 [![Code Climate](https://img.shields.io/codeclimate/github/AhmedAli7O1/hapi-arch.svg)]()
 [![Known Vulnerabilities](https://snyk.io/test/npm/hapi-arch/badge.svg)](https://snyk.io/test/npm/hapi-arch)
- 
+
+[v1 documentations](/README-V1.md)
+
 ## Table of Contents
 * [Introduction](#introduction)
 * [Features](#features)
 * [Usage](#usage)
     * [Generators](#generators)
 * [Plugins](#plugins)
-* [Methods](#methods)
-* [Policies](#policies)
-* [Models](#models)
-* [Services](#services)
-* [Controllers](#controllers)
 * [Input Validation](#input-validation)
 * [Routes](#routes)
+* [Controllers](#controllers)
+* [Services](#services)
+* [Models](#models)
 * [Settings](#settings)
-* [What is next](#what-is-next)
+    * [Plugins Blacklist](#Plugins-Blacklist)
 
 ### Introduction 
-Models, Services, Controllers and routes, without breaking the plugins architecture hapi uses.
- so you still can benefit from the microservices design by defining every single feature in your app as a plugin.
- 
- however, you don't need to deal with the server structure every time you need add/remove a plugin.
-  
-  you just create a plugin folder with your business logic, controllers, services, models and routes, then restart your server...then you're DONE! now you can access your new APi end-points.
 
+Hapi Arch is an CCF " Convention Control Framework " which make it easier to get up and running 
+with a fully working hapi server using just one command.
+
+Hapi Arch uses the following convention: <br> 
+    `Route => Controller => Service => Mode or user defined component`
+  
+Hapi Arch is implementing the above convention without breaking the plugins based architecture provided by Hapi.
+that means you can break your application down to small parts aka Plugins and for each plugin you get to build it 
+using the above convention. and you'll end up building your Hapi Server in a Microservices style, 
+as every plugin considered a separate Microservice.
+  
 ### Features
-  * hapi plugins as well as MVC conventions.
-  * mongoose support, just put your schema and use it directly from the services. 
+  * generate a fully working hapi server using one command.
+  * built in mongo & mongoose support.
+  * break your application logic/features into smaller parts/services using hapi plugins.
+  * in addition to controllers, services and models you can define your own components, 
+  and then start using them directly within the services in the same plugin. 
+  * you can defined your ArchPlugins to manipulate your components across all your plugins.   
+  * you can defined your ArchServices to schedule tasks before bootstrapping the server e.g connect to mongo.
+  * Joi input validation and auto generated swagger documentations.
   
 ### Usage
 
@@ -60,9 +71,6 @@ npm install
 npm start
 ```
 
-now you have a fully working REST server, with or without mongo support.
-you still have control over your server configuration in the `index.js`.
-
 ### Generators
 
 ##### available generators
@@ -73,151 +81,248 @@ hapi-arch generate plugin
 hapi-arch generate controller
 hapi-arch generate model
 hapi-arch generate service
-hapi-arch generate policy
-hapi-arch generate method
 ```    
 
 ### Plugins
-a plugin is considered a new feature, you can add new plugin by creating new folder under `app/api`
+Hapi provide you with a plugin system to be able to organize your app into small parts, 
+you can add new plugin by creating new folder under `app/api`
+or using the plugin generator `hapi-arch generate plugin`  
   
-  
-### Methods
-generic methods to use across all plugins.
-
-PATH: `app/methods/TestMethod.js`
-
-example: 
-```
-module.exports = function () {
-  // code goes here
-  return;
-};
-```
-  
-### Policies
-middlewares to apply one or more policy on your routes.
-
-PATH: `app/policies/hasJwt.js`
-
-example: 
-```
-module.exports = function (request, reply) {
-    // check JWT
-  return;
-};
-```
-  
-### Models
-mongoose models, to your DB models create new folder in your plugin folder and name it models, then add each model in a separate file, the file name will be the model/collection name, and inside the file export new mongoose Schema Object.
-
-PATH: `app/api/[plugin path]/models/Test.js`
-
-example:
-```
-const mongoose = require('mongoose');
-
-module.exports = new mongoose.Schema({
-  name: String,
-  age: Number 
-});
-```  
-  
-### Services
-where your bussiness logic goes.
-
-PATH: `app/api/[plugin dir]/services/TestService.js`
-
-example: 
-```
-module.exports = function (server, options, models, methods) {
-
-  return {
-
-    create: function (data) {
-      return models.Test.create(data);
-    }
-
-  };
-
-};
-```
-  
-### Controllers
-your API routes controllers.
-
-PATH: `app/api/[plugin dir]/controllers/TestController.js`
-
-example:
-```
-module.exports = function (server, options, services, methods) {
-
-  return {
-
-    create: function (request, reply) {
-
-      services.TestService.create(request.payload);
-
-    }
-
-  };
-
-};
-```  
- 
 ### Input Validation
-input validation schema for using Joi
+input validation schema using Joi, to validate your routes inputs,
+also it'll be used to generate swagger documentations.
 
-PATH: `app/api/[plugin dir]/schema/TestSchema.js`
+PATH: `app/api/[plugin dir]/schema/PostSchema.js`
 
 example: 
-```
+```javascript
 const Joi = require('joi');
-
+// Post Schema
 module.exports = {
-
   headers: Joi.object({
     'api-key': Joi.string().required()
       .description('Api Key of the api')
   }).options({allowUnknown:true}),
-
   payload: Joi.object({
-    test: Joi.string().example('test').description('this is an example!')
+    name: Joi.string().example('test').description('your name'),
+    age: Joi.number().example(20).description('your age')
   }).required()
-
 };
 ```
-  
-### Routes
-create routes for your API, and assign controllers methods, validation schema and methods.
 
-PATH: `app/api/[plugin dir]/routes.js`
-
-example: 
-```
-module.exports = function (controllers, schema, policies) {
+usage: 
+```javascript
+// routes.js
+module.exports = function (server, options, controllers, components) {
+  const { UserController } = controllers;
+  const { PostSchema } = components.schema;
   return [
     {
-      method: 'POST',
-      path: '/test',
+      method: "POST",
+      path: "/pluginOne/user",
       config: {
-        handler: controllers.TestController.create,
-        description: 'route description',
-        tags: ['api'],
-        validate: schema.TestSchema,
-        pre: [{
-          method: policies.hasJwt
-        }]
+        handler: UserController.create,
+        description: "create new user",
+        tags: ["api"],
+        validate: PostSchema
       }
     }
   ];
 };
 ```
   
+### Routes
+your api endpoints.
+create routes for your API, and assign controllers and validation schema.
+
+PATH: `app/api/[plugin dir]/routes.js`
+
+example: 
+```javascript
+// routes.js
+module.exports = function (server, options, controllers, components) {
+
+  const { UserController } = controllers;
+  const { GetSchema } = components.schema;
+  const { PostSchema } = components.schema;
+
+  return [
+    {
+      method: "GET",
+      path: "/pluginOne/user",
+      config: {
+        handler: UserController.find,
+        description: "find all users",
+        tags: ["api"],
+        validate: GetSchema
+      }
+    },
+    {
+      method: "POST",
+      path: "/pluginOne/user",
+      config: {
+        handler: UserController.create,
+        description: "create new user",
+        tags: ["api"],
+        validate: PostSchema
+      }
+    }
+  ];
+};
+```
+
+### Controllers
+Controllers contains the handlers/actions/functions which we bind to each route.
+
+Controllers mainly control the flow of the request, so it receives the user request,
+and ask services to do the business logic and then return the end result to the user.
+
+Controllers do not directly call models or other controllers, 
+instead it just control the flow. but services does this.
+
+PATH: `app/api/[plugin dir]/controllers/UserController.js`
+
+example:
+```javascript
+// Test Controller
+module.exports = function (server, options, services) {
+  const { TestService } = services;
+  const { UserService } = services;
+  return {
+    create: function (request, reply) {
+      UserService.validate(request.payload)
+        .then(user => UserService.create(user))
+        .then(user => TestService.test(user))
+        .then(res => reply(res))
+        .catch(err => reply(err));
+    },
+    find: function (request, reply) {
+      UserService.find({})
+        .then(res => reply(res))
+        .catch(err => reply(err));
+    }
+  };
+};
+```  
+
+usage: 
+```javascript
+module.exports = function (server, options, controllers, components) {
+
+  const { UserController } = controllers;
+  const { GetSchema } = components.schema;
+  const { PostSchema } = components.schema;
+
+  return [
+    {
+      method: "GET",
+      path: "/pluginOne/user",
+      config: {
+        handler: UserController.find,
+        description: "find all users",
+        tags: ["api"],
+        validate: GetSchema
+      }
+    },
+    {
+      method: "POST",
+      path: "/pluginOne/user",
+      config: {
+        handler: UserController.create,
+        description: "create new user",
+        tags: ["api"],
+        validate: PostSchema
+      }
+    }
+  ];
+};
+```
+
+### Services
+Services is the place where your business logic go,
+a Service should be able to take care of the business logic for one unit,
+in your app, i.e a User Service could provide us with a create, find, update and delete
+functions to deal with the user accounts.
+
+Services normally should be used inside Controllers, they should not talk to each others,
+as services better be stateless, if you modified a service code this should not affect
+any other service.
+
+inside services you can use both predefined components e.g models or user defined components.
+
+PATH: `app/api/[plugin dir]/services/TestService.js`
+
+example: 
+```javascript
+const co = require("co");
+// Test Service
+module.exports = function (server, options, components) {
+  const { Test } = components.models;
+  const { FirstApi } = components.myapis;
+  return {
+    find: function (criteria) {
+      return co(function* () {
+        const data = yield Test.find(criteria);
+        if (data) {
+          return FirstApi.get(data);
+        }
+      });
+    }
+  };
+};
+```
+
+usage:
+```javascript
+// Test Controller
+module.exports = function (server, options, services) {
+  const { TestService } = services;
+  return {
+    find: function (request, reply) {
+      TestService.find({}).then(reply).catch(reply);
+    }
+  };
+};
+```
+
+### Models
+Models is a predefined Arch Component that by default includes your DB Schema/ORM implementation.
+if you choose to include mongoose support you'll be provided a folder called models, 
+to put all your MongoDB models, but still you can create this folder yourself and put your preferred DB Schema
+or ORM implementation, and then you can use it directly from services via the components parameter, and if your schema
+requires any modifications before it'll be ready, you can do so by creating an ArchPlugin which targets your Component.
+
+PATH: `app/api/[plugin path]/models/Test.js`
+
+example:
+```javascript
+const mongoose = require('mongoose');
+// here we exports mongoose schema.
+module.exports = new mongoose.Schema({
+  name: String,
+  age: Number 
+});
+```  
+  
+usage: how to call it from a service 
+```javascript
+// Test Service
+module.exports = function (server, options, components) {
+  const { Test } = components.models;
+  return {
+    find: function (criteria) {
+      // the model name is the same as the file name.
+      return Test.find(criteria);
+    }
+  };
+};
+```
+  
 ### Settings
-* to disable plugin without removing it, including its test cases and everything, just add the plugin name to the file ` .hapiarch.json ` in ` plugins.blacklist ` array.  
+`arch.json` is the place to put your arch configuration.
 
-### What is next
-I'm working on the documentation as well as more new features, please feel free to suggest or even help with your code (^_^)
+you can configure the following:
 
-I'm also looking to add swagger support and Lab testing, in a few days, maybe! 
-Have Fun ;) 
+#### Plugins Blacklist
+* usage: `plugins.blacklist {Array}`
+* description: add one or more plugins name to disable this plugin from starting.
