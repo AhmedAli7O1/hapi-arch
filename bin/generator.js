@@ -214,10 +214,6 @@ function genNew() {
                   ]
                 }
               ]
-            },
-            {
-              type: "folder",
-              name: "policies"
             }
           ]
         },
