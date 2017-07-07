@@ -1,16 +1,16 @@
 {
   "name": "hapi-arch",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "hapi Convention Control framework",
   "author": "https://github.com/AhmedAli7O1",
   "dependencies": {
     "axel": "0.0.3",
     "bluebird": "^3.5.0",
-    "chalk": "^1.1.3",
+    "chalk": "^2.0.1",
     "co": "^4.6.0",
     "co-prompt": "^1.0.0",
     "colors": "^1.1.2",
-    "commander": "^2.9.0",
+    "commander": "^2.11.0",
     "hapi": "^16.3.0",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
@@ -34,6 +34,6 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "eslint": "^4.1.0"
+    "eslint": "^4.1.1"
   }
 }
