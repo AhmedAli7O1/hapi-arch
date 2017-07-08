@@ -63,7 +63,8 @@ function genNew() {
     let promptDescription = yield prompt("enter the app description: ");
     let promptVersion = yield prompt("enter the app version (default 1.0.0) : ");
     let promptAuthor = yield prompt(`enter the app author (default ${author}) : `) || author;
-    let mongo = yield prompt("do you want to include mongodb support using mongoose? (y) : ");
+    let mongo = yield prompt("do you want to include mongodb support using mongoose? (y/n) default to n : ");
+    let newMongo = yield prompt("do you have existing mongodb database? (y/n) default to n : ");
 
     if (mongo === "y") {
       yield prompt("since you chosen to include mongoose support, you should setup a mongo instance before starting the server. (press enter)");
@@ -140,7 +141,7 @@ function genNew() {
             {
               type: "file",
               name: "mongo",
-              template: "mongo"
+              template: newMongo === "y" ? "mongo-new" : "mongo" 
             }
           ]
         },
