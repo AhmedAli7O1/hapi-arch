@@ -65,14 +65,24 @@ function createArch (config, appConfig) {
 function init () {
   return co(function* () {
 
-    archLog.info(`Welcome to Hapi Arch v${pkg.version}`);
-
     let serverData = {
       thirdParties: null,
       bootstrap: null,
       arch: null,
       appConfig: null
     };
+
+    /* load app configurations */
+    serverData.appConfig = yield appConfig(env);
+
+    /* set globals */
+    global._ = _;
+    global.moment = moment;
+    global.TEST = [];
+    global.ENV = env;
+    global.CONFIG = serverData.appConfig;
+
+    archLog.info(`Welcome to Hapi Arch v${pkg.version}`);
 
     /* load third parties */
     const thirdPartiesPath = archFs.join(locations.APP_MIN_DIR, config.paths.thirdParties);
@@ -86,18 +96,8 @@ function init () {
       serverData.bootstrap = archFs.load(bootstrapPath);
     }
 
-    /* load app configurations */
-    serverData.appConfig = yield appConfig(env);
-
     /* load hapi-arch */
     serverData.arch = yield createArch(config, serverData.appConfig);
-
-    /* set globals */
-    global._ = _;
-    global.moment = moment;
-    global.TEST = [];
-    global.ENV = env;
-    global.CONFIG = serverData.appConfig;
 
     return serverData;
 
