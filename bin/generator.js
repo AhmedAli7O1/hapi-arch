@@ -86,7 +86,8 @@ function genNew() {
         "hapi-arch": `^${pkg.version}`
       },
       scripts: {
-        start: "node index.js"
+        start: "node index.js",
+        test: "./node_modules/lab/bin/lab ./node_modules/hapi-arch/lib/test.js"
       },
     };
 
