@@ -1,6 +1,6 @@
 {
   "name": "hapi-arch",
-  "version": "2.0.13",
+  "version": "2.1.0",
   "description": "hapi Convention Control framework",
   "author": "https://github.com/AhmedAli7O1",
   "dependencies": {
