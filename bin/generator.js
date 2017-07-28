@@ -31,9 +31,6 @@ module.exports = function (mode) {
   case "policy":
     genPolicy();
     break;
-  case "method":
-    genMethod();
-    break;
   default:
     archLog.error(`generator type ${mode} not supported!`);
     break;
@@ -87,7 +84,7 @@ function genNew() {
       },
       scripts: {
         start: "node index.js",
-        test: "./node_modules/lab/bin/lab ./node_modules/hapi-arch/lib/test.js"
+        test: "node index.js --env=test"
       },
     };
 
@@ -212,6 +209,17 @@ function genNew() {
                       type: "file",
                       name: "routes",
                       template: "routes"
+                    },
+                    {
+                      type: "folder",
+                      name: "test",
+                      sub: [
+                        {
+                          type: "file",
+                          name: "user.spec.js",
+                          template: "test"
+                        }
+                      ]
                     }
                   ]
                 }
@@ -510,33 +518,6 @@ function genPolicy() {
       location: getPath("policies"),
       name: policyName,
       template: "policy"
-    });
-
-    process.exit(0);
-
-  });
-}
-
-function genMethod() {
-  co(function *() {
-
-    let methodName = "";
-
-    // read the method name
-    while (methodName.length < 1) {
-      methodName = yield prompt("enter the method name : ");
-      if (methodName && isExist("method", null, methodName)) {
-        archLog.error(`method with name ${methodName} is already exist`);
-        methodName = "";
-      }
-    }
-
-    // create the method.
-    generate({
-      type: "file",
-      location: getPath("methods"),
-      name: methodName,
-      template: "method"
     });
 
     process.exit(0);
