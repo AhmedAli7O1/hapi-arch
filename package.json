@@ -1,6 +1,6 @@
 {
   "name": "hapi-arch",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "hapi Convention Control framework",
   "author": "https://github.com/AhmedAli7O1",
   "dependencies": {
@@ -34,6 +34,6 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "eslint": "^4.2.0"
+    "eslint": "^4.3.0"
   }
 }
