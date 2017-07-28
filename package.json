@@ -1,6 +1,6 @@
 {
   "name": "hapi-arch",
-  "version": "2.1.2",
+  "version": "2.2.1",
   "description": "hapi Convention Control framework",
   "author": "https://github.com/AhmedAli7O1",
   "dependencies": {
@@ -15,7 +15,8 @@
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "pretty-error": "^2.1.0",
-    "verror": "^1.10.0"
+    "verror": "^1.10.0",
+    "yargs": "^8.0.2"
   },
   "bin": {
     "hapi-arch": "./bin/index.js"

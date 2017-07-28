@@ -87,7 +87,7 @@ function genNew() {
       },
       scripts: {
         start: "node index.js",
-        test: "./node_modules/lab/bin/lab ./node_modules/hapi-arch/lib/test.js"
+        test: "node index.js --env=test"
       },
     };
 
@@ -212,6 +212,17 @@ function genNew() {
                       type: "file",
                       name: "routes",
                       template: "routes"
+                    },
+                    {
+                      type: "folder",
+                      name: "test",
+                      sub: [
+                        {
+                          type: "file",
+                          name: "user.spec.js",
+                          template: "test"
+                        }
+                      ]
                     }
                   ]
                 }

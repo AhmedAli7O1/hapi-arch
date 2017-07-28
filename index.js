@@ -1,5 +1,6 @@
 "use strict";
 
+const argv = require('yargs').argv;
 const co = require("co");
 const archLog = require("./lib/archLog");
 const locations = require("./lib/locations");
@@ -8,7 +9,7 @@ const ERRORS = require("./lib/text/errors.json");
 const config = require("./config");
 const moment = require("moment");
 const _ = require("lodash");
-const env = process.env.NODE_ENV || "development";
+const env = process.env.NODE_ENV || argv.env || "development";
 let appConfig = require("./lib/config");
 const pkg = require("./package.json");
 const archServices = require("./lib/archServices");
