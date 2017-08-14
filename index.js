@@ -44,21 +44,7 @@ function createArch (config, appConfig) {
       throw new Error(ERRORS.NO_PLUGINS);
     }
 
-    const register = function (server, options, next) {
-
-      server.register(plugins);
-      archLog.info(`${plugins.length} ${ plugins.length > 1 ? "Plugins" : "Plugin" } Loaded!`);
-      archLog.info(`Environment >> ${env}`);
-      archLog.info(`API documentation @ ${server.info.uri}/documentation`);
-      next();
-
-    };
-
-    register.attributes = {
-      pkg: pkg
-    };
-
-    return register;
+    return plugins;
 
   });
 }
@@ -79,7 +65,7 @@ function init () {
     /* set globals */
     global._ = _;
     global.moment = moment;
-    global.TEST = [];
+    global.TEST = {};
     global.ENV = env;
     global.CONFIG = serverData.appConfig;
 
@@ -119,7 +105,16 @@ module.exports = function () {
         config: serverData.appConfig
       });
 
-      archLog.info(`Server running @ ${server.info.uri}`);
+      archLog.info(`${serverData.arch.length} ${ serverData.arch.length > 1 ? "Plugins" : "Plugin" } Loaded!`);
+      archLog.info(`Environment >> ${env}`);
+      
+      if (ENV === 'test') {
+        require('./lib/test');
+      }
+      else {
+        archLog.info(`API documentation @ ${server.info.uri}/documentation`);
+        archLog.info(`Server running @ ${server.info.uri}`);
+      }
 
       return server;
 

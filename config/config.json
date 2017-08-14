@@ -11,5 +11,12 @@
   },
   "plugins": {
     "blacklist": []
-  } 
+  },
+  "globals": [
+    "TEST",
+    "_",
+    "moment",
+    "CONFIG",
+    "ENV"
+  ]
 }
