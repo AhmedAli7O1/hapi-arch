@@ -219,7 +219,7 @@ function genNew() {
                       sub: [
                         {
                           type: "file",
-                          name: "user.spec.js",
+                          name: "user.spec",
                           template: "test-new"
                         }
                       ]
