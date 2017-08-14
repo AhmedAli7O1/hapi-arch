@@ -61,9 +61,9 @@ function genNew() {
     let promptVersion = yield prompt("enter the app version (default 1.0.0) : ");
     let promptAuthor = yield prompt(`enter the app author (default ${author}) : `) || author;
     let mongo = yield prompt("do you want to include mongodb support using mongoose? (y/n) default to n : ");
-    let existingMongo = yield prompt("do you have existing mongodb database? (y/n) default to n : ");
-
+    let existingMongo = null;
     if (mongo === "y") {
+      existingMongo = yield prompt("do you have existing mongodb database? (y/n) default to n : ");
       yield prompt("since you chosen to include mongoose support, you should setup a mongo instance before starting the server. (press enter)");
     }
 
@@ -78,8 +78,11 @@ function genNew() {
         "good-squeeze": "*",
         "good-console": "*",
         "inert": "*",
+        "lodash": "*",
+        "moment": "*",
         "vision": "*",
         "hapi-swagger": "*",
+        "lab": "*",
         "hapi-arch": `^${pkg.version}`
       },
       scripts: {
@@ -217,7 +220,7 @@ function genNew() {
                         {
                           type: "file",
                           name: "user.spec.js",
-                          template: "test"
+                          template: "test-new"
                         }
                       ]
                     }
