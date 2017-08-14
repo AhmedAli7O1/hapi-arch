@@ -67,22 +67,24 @@ function genNew() {
       yield prompt("since you chosen to include mongoose support, you should setup a mongo instance before starting the server. (press enter)");
     }
 
+    const pkgVer = require("./pkgVer.json");
+
     const appPkg = {
       name: appName,
       version: promptVersion || version,
       description: promptDescription || description,
       author: promptAuthor || author,
       dependencies: {
-        "hapi": "*",
-        "good": "*",
-        "good-squeeze": "*",
-        "good-console": "*",
-        "inert": "*",
-        "lodash": "*",
-        "moment": "*",
-        "vision": "*",
-        "hapi-swagger": "*",
-        "lab": "*",
+        "hapi": pkgVer.hapi,
+        "good": pkgVer.good,
+        "good-squeeze": pkgVer.goodSqueeze,
+        "good-console": pkgVer.goodConsole,
+        "inert": pkgVer.inert,
+        "lodash": pkgVer.lodash,
+        "moment": pkgVer.moment,
+        "vision": pkgVer.vision,
+        "hapi-swagger": pkgVer.hapiSwagger,
+        "lab": pkgVer.lab,
         "hapi-arch": `^${pkg.version}`
       },
       scripts: {
@@ -92,7 +94,7 @@ function genNew() {
     };
 
     // check if the user want to add mongoose.
-    if (mongo === "y") appPkg.dependencies["mongoose"] = "*";
+    if (mongo === "y") appPkg.dependencies["mongoose"] = pkgVer.mongoose;
 
     archLog.info(JSON.stringify(appPkg, null, 2));
     let ans = yield prompt("this is your package.json file looks like, is that okay? (y) : ");

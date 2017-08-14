@@ -1,0 +1,14 @@
+{
+  "good": "^7.2.0",
+  "goodConsole": "^6.4.0",
+  "goodSqueeze": "^5.0.2",
+  "hapi": "^16.5.2",
+  "hapiArch": "^2.3.1",
+  "hapiSwagger": "^7.7.0",
+  "inert": "^4.2.1",
+  "lab": "^14.1.2",
+  "lodash": "^4.17.4",
+  "moment": "^2.18.1",
+  "mongoose": "^4.11.7",
+  "vision": "^4.1.1"
+}
