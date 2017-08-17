@@ -527,3 +527,7 @@ module.exports = {
 ##### Plugins Blacklist
 * usage: `plugins.blacklist {Array}`
 * description: add one or more plugins name to disable this plugin from starting.
+
+
+### Style Guide
+[hapijs coding style guide](https://hapijs.com/styleguide) 
