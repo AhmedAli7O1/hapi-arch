@@ -1,9 +1,9 @@
-"use strict";
+'use strict';
 
-const locations = require("../lib/locations");
-const archFs = require("../lib/archFs");
-const archLog = require("../lib/archLog");
-const ERRORS = require("../lib/text/errors.json");
+const locations = require('../lib/locations');
+const archFs = require('../lib/archFs');
+const archLog = require('../lib/archLog');
+const ERRORS = require('../lib/text/errors.json');
 
 const userConfigPath = locations.USER_CONFIG;
 

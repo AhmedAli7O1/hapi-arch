@@ -1,23 +1,24 @@
-"use strict";
+'use strict';
 
-const argv = require('yargs').argv;
-const co = require("co");
-const archLog = require("./lib/archLog");
-const locations = require("./lib/locations");
-const archFs = require("./lib/archFs");
-const ERRORS = require("./lib/text/errors.json");
-const config = require("./config");
-const moment = require("moment");
-const _ = require("lodash");
-const env = process.env.NODE_ENV || argv.env || "development";
-let appConfig = require("./lib/config");
-const pkg = require("./package.json");
-const archServices = require("./lib/archServices");
-const createServer = require("./lib/server");
-const pluginsLoader = require("./lib/plugins");
-const archPluginsUtils = require("./lib/archPlugins/utils");
+const { argv } = require('yargs');
+const co = require('co');
+const archLog = require('./lib/archLog');
+const locations = require('./lib/locations');
+const archFs = require('./lib/archFs');
+const ERRORS = require('./lib/text/errors.json');
+const config = require('./config');
+const moment = require('moment');
+const _ = require('lodash');
+const env = process.env.NODE_ENV || argv.env || 'development';
+const appConfig = require('./lib/config');
+const pkg = require('./package.json');
+const archServices = require('./lib/archServices');
+const createServer = require('./lib/server');
+const pluginsLoader = require('./lib/plugins');
+const archPluginsUtils = require('./lib/archPlugins/utils');
+const standards = require('./lib/standards');
 
-function loadPlugins (config) {
+const loadPlugins = function (config) {
   const pluginsPath =
     archFs.join(
       locations.APP_MIN_DIR || process.cwd(),
@@ -25,9 +26,9 @@ function loadPlugins (config) {
     );
 
   return pluginsLoader(pluginsPath);
-}
+};
 
-function createArch (config, appConfig) {
+const createArch = function (config, appConfig) {
   return co(function* () {
 
     if (config.archServices && config.archServices.length) {
@@ -47,12 +48,12 @@ function createArch (config, appConfig) {
     return plugins;
 
   });
-}
+};
 
-function init () {
+const init = function () {
   return co(function* () {
 
-    let serverData = {
+    const serverData = {
       thirdParties: null,
       bootstrap: null,
       arch: null,
@@ -68,8 +69,6 @@ function init () {
     global.TEST = {};
     global.ENV = env;
     global.CONFIG = serverData.appConfig;
-
-    archLog.info(`Welcome to Hapi Arch v${pkg.version}`);
 
     /* load third parties */
     const thirdPartiesPath = archFs.join(locations.APP_MIN_DIR, config.paths.thirdParties);
@@ -89,12 +88,28 @@ function init () {
     return serverData;
 
   });
-}
+};
+
+const applyStandards = function () {
+
+  // run only if you standards is enabled for the current env
+  const allowedEnv = _.get(config, 'standards.env');
+  if (_.find(allowedEnv, (x) => x === env)) {
+    const lintFix = _.find(argv._, (x) => x === 'fix');
+    standards({ fix: lintFix });
+  }
+
+};
 
 module.exports = function () {
   return co(function* () {
 
     try {
+
+      archLog.info(`Welcome to Hapi Arch v${pkg.version}`);
+      archLog.info(`Environment >> ${env}`);
+
+      applyStandards();
 
       const serverData = yield init();
 
@@ -105,10 +120,11 @@ module.exports = function () {
         config: serverData.appConfig
       });
 
-      archLog.info(`${serverData.arch.length} ${ serverData.arch.length > 1 ? "Plugins" : "Plugin" } Loaded!`);
-      archLog.info(`Environment >> ${env}`);
-      
+      /* eslint no-magic-numbers: "off" */
+      archLog.info(`${serverData.arch.length} ${ serverData.arch.length > 1 ? 'Plugins' : 'Plugin' } Loaded!`);
+
       if (ENV === 'test') {
+        /* eslint global-require: "off" */
         require('./lib/test');
       }
       else {

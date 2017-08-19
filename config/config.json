@@ -18,5 +18,8 @@
     "moment",
     "CONFIG",
     "ENV"
-  ]
+  ],
+  "standards": {
+    "env": []
+  }
 }

@@ -1,6 +1,6 @@
 {
   "name": "hapi-arch",
-  "version": "2.3.3",
+  "version": "2.4.0",
   "description": "hapi Convention Control framework",
   "author": "https://github.com/AhmedAli7O1",
   "dependencies": {
@@ -11,6 +11,7 @@
     "co-prompt": "^1.0.0",
     "colors": "^1.1.2",
     "commander": "^2.11.0",
+    "eslint": "^4.4.1",
     "hapi": "^16.5.0",
     "lab": "^14.1.2",
     "lodash": "^4.17.4",
