@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 /**
  * this module will load the local config
@@ -6,9 +6,9 @@
  * also user config will override the local once.
  */
 
-const _ = require("lodash");
-const localConfig = require("./config.json");
-const userConfig = require("./userConfig");
+const _ = require('lodash');
+const localConfig = require('./config.json');
+const userConfig = require('./userConfig');
 
 _.merge(localConfig, userConfig);
 
