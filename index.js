@@ -1,5 +1,6 @@
 'use strict';
 
+const Hapi = require('hapi');
 const { argv } = require('yargs');
 const co = require('co');
 const archLog = require('./lib/archLog');
@@ -17,6 +18,7 @@ const createServer = require('./lib/server');
 const pluginsLoader = require('./lib/plugins');
 const archPluginsUtils = require('./lib/archPlugins/utils');
 const standards = require('./lib/standards');
+const strategies = require('./lib/strategies');
 
 const loadPlugins = function (config) {
   const pluginsPath =
@@ -113,7 +115,13 @@ module.exports = function () {
 
       const serverData = yield init();
 
-      const server = yield createServer({
+      const server = new Hapi.Server();
+      server.connection(serverData.appConfig.connection);
+
+      yield strategies(server);
+
+      yield createServer({
+        server: server,
         arch: serverData.arch,
         thirdParties: serverData.thirdParties,
         bootstrap: serverData.bootstrap,
