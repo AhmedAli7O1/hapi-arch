@@ -7,7 +7,8 @@
     "archServices": "archServices",
     "archPlugins": "archPlugins",
     "thirdParties": "thirdParty.js",
-    "bootstrap": "bootstrap.js"
+    "bootstrap": "bootstrap.js",
+    "strategies": "app/strategies"
   },
   "plugins": {
     "blacklist": []

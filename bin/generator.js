@@ -240,6 +240,17 @@ const genNew = function () {
                   ]
                 }
               ]
+            },
+            {
+              type: 'folder',
+              name: 'strategies',
+              sub: [
+                {
+                  type: 'file',
+                  name: 'apiKey',
+                  template: 'strategy'
+                }
+              ]
             }
           ]
         },
