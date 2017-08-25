@@ -4,6 +4,7 @@ const co = require('co');
 const prompt = require('co-prompt');
 const os = require('os');
 const archLog = require('../lib/archLog');
+const archFs = require('../lib/archFs');
 const pkg = require('../package.json');
 const isExist = require('../lib/isExist');
 const getPath = require('../lib/getPath');
@@ -563,6 +564,38 @@ const genPolicy = function () {
   });
 };
 
+const genStrategy = function () {
+  co(function* () {
+
+    let strategyName = '';
+
+    // read the policy name
+    while (strategyName.length < 1) {
+      strategyName = yield prompt('enter strategy name : ');
+      if (strategyName && isExist('strategy', null, strategyName)) {
+        archLog.error(`strategy with name ${strategyName} is already exist`);
+        strategyName = '';
+      }
+    }
+
+    const strategiesDir = getPath('strategies');
+    if (!(yield archFs.exist(strategiesDir))) {
+      fs.mkdirSync(strategiesDir);
+    }
+
+    // create the policy.
+    generate({
+      type: 'file',
+      location: getPath('strategies'),
+      name: strategyName,
+      template: 'strategy'
+    });
+
+    process.exit(0);
+
+  });
+};
+
 module.exports = function (mode) {
   switch (mode) {
   case 'new':
@@ -582,6 +615,9 @@ module.exports = function (mode) {
     break;
   case 'policy':
     genPolicy();
+    break;
+  case 'strategy':
+    genStrategy();
     break;
   default:
     archLog.error(`generator type ${mode} not supported!`);
