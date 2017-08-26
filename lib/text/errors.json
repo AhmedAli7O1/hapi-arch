@@ -7,6 +7,7 @@
   "NO_PLUGINS": "no plugins found",
   "NO_CONFIG": "no user configuration found!",
   "NO_APP_CONFIG_DIR": "app configurations directory is missing!",
+  "NO_ENV_IN_CONFIG": "configurations loader expect the environment information",
   "AP_COMP_NOT_FOUND": "targeted component not found!",
   "AP_CONFIG_NOT_FOUND": "configuration not found!",
   "AS_CONFIG_NOT_FOUND": "configuration not found!",

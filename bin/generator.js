@@ -27,7 +27,6 @@ const generate = function (data) {
 
 const askPluginNameToGen = function () {
   return co(function* () {
-
     let pluginName = '';
 
     // read the plugin name
@@ -41,16 +40,12 @@ const askPluginNameToGen = function () {
     }
 
     return pluginName;
-
   });
 };
 
-
 const genNew = function () {
-
   // take the user input.
   co(function* () {
-
     let appName = '';
     const version = '1.0.0';
     const description = 'hapi server';
@@ -61,7 +56,9 @@ const genNew = function () {
       if (appName.length > 1) {
         appName = appName.toLowerCase();
         appName = appName.replace(' ', '-');
-        const ans = yield prompt(`your app name will be ${appName} is that okay? (y): `);
+        const ans = yield prompt(
+          `your app name will be ${appName} is that okay? (y): `
+        );
         if (ans.toLowerCase() !== 'y') {
           appName = '';
         }
@@ -69,15 +66,24 @@ const genNew = function () {
     }
 
     const promptDescription = yield prompt('enter the app description: ');
-    const promptVersion = yield prompt('enter the app version (default 1.0.0) : ');
-    const promptAuthor = yield prompt(`enter the app author (default ${author}) : `) || author;
-    const mongo = yield prompt('do you want to include mongodb support using mongoose? (y/n) default to n : ');
+    const promptVersion = yield prompt(
+      'enter the app version (default 1.0.0) : '
+    );
+    const promptAuthor = yield prompt(
+      `enter the app author (default ${author}) : `
+    ) || author;
+    const mongo = yield prompt(
+      'do you want to include mongodb support using mongoose? (y/n) default to n : '
+    );
     let existingMongo = null;
     if (mongo === 'y') {
-      existingMongo = yield prompt('do you have existing mongodb database? (y/n) default to n : ');
-      yield prompt('since you chosen to include mongoose support, you should setup a mongo instance before starting the server. (press enter)');
+      existingMongo = yield prompt(
+        'do you have existing mongodb database? (y/n) default to n : '
+      );
+      yield prompt(
+        'since you chosen to include mongoose support, you should setup a mongo instance before starting the server. (press enter)'
+      );
     }
-
 
     const appPkg = {
       name: appName,
@@ -100,7 +106,7 @@ const genNew = function () {
       scripts: {
         start: 'node index.js',
         test: 'node index.js --env=test'
-      },
+      }
     };
 
     // check if the user want to add mongoose.
@@ -109,8 +115,9 @@ const genNew = function () {
     }
 
     archLog.info(JSON.stringify(appPkg, null, 2));
-    const ans = yield prompt('this is your package.json file looks like, is that okay? (y) : ');
-
+    const ans = yield prompt(
+      'this is your package.json file looks like, is that okay? (y) : '
+    );
 
     if (ans !== 'y') {
       archLog.error('app creation canceled!');
@@ -157,6 +164,11 @@ const genNew = function () {
               type: 'file',
               name: 'mongo',
               template: existingMongo === 'y' ? 'mongo' : 'mongo-new'
+            },
+            {
+              type: 'file',
+              name: 'crontask',
+              template: 'crontask-config'
             }
           ]
         },
@@ -180,6 +192,17 @@ const genNew = function () {
                           type: 'file',
                           name: 'UserController',
                           template: 'controller-new'
+                        }
+                      ]
+                    },
+                    {
+                      type: 'folder',
+                      name: 'crontasks',
+                      sub: [
+                        {
+                          type: 'file',
+                          name: 'TestCron',
+                          template: 'crontask'
                         }
                       ]
                     },
@@ -218,7 +241,8 @@ const genNew = function () {
                         {
                           type: 'file',
                           name: 'UserService',
-                          template: mongo === 'y' ? 'service-new-mongo' : 'service-new'
+                          template:
+                            mongo === 'y' ? 'service-new-mongo' : 'service-new'
                         }
                       ]
                     },
@@ -259,19 +283,10 @@ const genNew = function () {
           type: 'json',
           name: 'arch',
           data: {
-            'plugins': {
-              'blacklist': [
-                'pluginName'
-              ]
-            },
-            'archServices': (mongo === 'y' ? ['mongo']: []),
-            'archPlugins': (mongo === 'y' ? ['mongoose']: []),
-            'standards': {
-              'env': [
-                'development',
-                'test'
-              ]
-            }
+            plugins: { blacklist: ['pluginName'] },
+            archServices: mongo === 'y' ? ['mongo'] : [],
+            archPlugins: mongo === 'y' ? ['mongoose'] : [],
+            standards: { env: ['development', 'test'] }
           }
         },
         {
@@ -310,14 +325,11 @@ const genNew = function () {
     archLog.hint(`Done! now >> cd ${appName} && npm install`);
 
     process.exit(0);
-
   });
-
 };
 
 const genPlugin = function () {
   co(function* () {
-
     let pluginName = '';
 
     // read the plugin name
@@ -330,10 +342,14 @@ const genPlugin = function () {
       }
     }
 
-    const mongo = yield prompt('do you want to include mongodb support using mongoose? (y) : ');
+    const mongo = yield prompt(
+      'do you want to include mongodb support using mongoose? (y) : '
+    );
 
     if (mongo === 'y') {
-      yield prompt('since you chosen to include mongoose support, you should setup a mongo instance before starting the server. (press enter)');
+      yield prompt(
+        'since you chosen to include mongoose support, you should setup a mongo instance before starting the server. (press enter)'
+      );
     }
 
     const schema = {
@@ -349,6 +365,17 @@ const genPlugin = function () {
               type: 'file',
               name: 'UserController',
               template: 'controller-new'
+            }
+          ]
+        },
+        {
+          type: 'folder',
+          name: 'crontasks',
+          sub: [
+            {
+              type: 'file',
+              name: 'TestCron',
+              template: 'crontask'
             }
           ]
         },
@@ -404,13 +431,11 @@ const genPlugin = function () {
     archLog.hint('Done!');
 
     process.exit(0);
-
   });
 };
 
 const genController = function () {
   co(function* () {
-
     // read the plugin name
     const pluginName = yield askPluginNameToGen();
 
@@ -445,13 +470,11 @@ const genController = function () {
     });
 
     process.exit(0);
-
   });
 };
 
 const genService = function () {
   co(function* () {
-
     const pluginName = yield askPluginNameToGen();
 
     let serviceName = '';
@@ -484,15 +507,12 @@ const genService = function () {
       template: 'service'
     });
 
-
     process.exit(0);
-
   });
 };
 
 const genModel = function () {
   co(function* () {
-
     // let mongoEnabled = _.get(archConfig, 'options.MongoDB');
     //
     // if (!mongoEnabled) {
@@ -533,13 +553,11 @@ const genModel = function () {
     });
 
     process.exit(0);
-
   });
 };
 
 const genPolicy = function () {
   co(function* () {
-
     let policyName = '';
 
     // read the policy name
@@ -560,13 +578,11 @@ const genPolicy = function () {
     });
 
     process.exit(0);
-
   });
 };
 
 const genStrategy = function () {
   co(function* () {
-
     let strategyName = '';
 
     // read the policy name
@@ -592,7 +608,44 @@ const genStrategy = function () {
     });
 
     process.exit(0);
+  });
+};
 
+const genCrontask = function () {
+  co(function* () {
+    const pluginName = yield askPluginNameToGen();
+
+    let crontaskName = '';
+
+    // read the service name
+    while (crontaskName.length < 1) {
+      crontaskName = yield prompt('enter the crontask name : ');
+      if (crontaskName && isExist('crontask', pluginName, crontaskName)) {
+        archLog.error(`crontask with name ${crontaskName} is already exist`);
+        crontaskName = '';
+      }
+    }
+
+    // if crontasks folder not exist create it.
+    const crontasksPath = getPath('crontasks', pluginName);
+
+    if (!fs.existsSync(crontasksPath)) {
+      generate({
+        type: 'folder',
+        name: 'crontasks',
+        location: getPath('plugin', pluginName)
+      });
+    }
+
+    // create the crontask.
+    generate({
+      type: 'file',
+      location: getPath('crontasks', pluginName),
+      name: crontaskName,
+      template: 'crontask'
+    });
+
+    process.exit(0);
   });
 };
 
@@ -618,6 +671,9 @@ module.exports = function (mode) {
     break;
   case 'strategy':
     genStrategy();
+    break;
+  case 'crontask':
+    genCrontask();
     break;
   default:
     archLog.error(`generator type ${mode} not supported!`);
