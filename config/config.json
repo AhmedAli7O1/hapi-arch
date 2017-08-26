@@ -3,6 +3,7 @@
   "paths": {
     "plugins": "app/api",
     "routes": "routes.js",
+    "crontasks": "crontasks",
     "config": "config",
     "archServices": "archServices",
     "archPlugins": "archPlugins",
