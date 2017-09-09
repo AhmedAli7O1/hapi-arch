@@ -11,9 +11,8 @@
     "co-prompt": "^1.0.0",
     "colors": "^1.1.2",
     "commander": "^2.11.0",
-    "eslint": "^4.4.1",
     "hapi": "^16.5.0",
-    "lab": "^14.1.2",
+    "lab": "^14.2.2",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "node-schedule": "^1.2.4",
@@ -38,6 +37,6 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "eslint": "^4.3.0"
+    "eslint": "^4.6.1"
   }
 }
