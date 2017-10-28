@@ -1,0 +1,28 @@
+{
+  "name": "hapi-arch",
+  "version": "0.1.0",
+  "description": "hapijs architecture manager",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha ./test/**/*.js",
+    "docs": "jsdoc -r -c jsdoc.json -d docs"
+  },
+  "keywords": [],
+  "author": "Ahmed Ali",
+  "license": "MIT",
+  "engines": {
+    "node": ">=8.0.0 <*"
+  },
+  "dependencies": {
+    "chalk": "^2.3.0",
+    "fs-extra": "^4.0.2",
+    "lodash": "^4.17.4"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
+    "jsdoc": "^3.5.5",
+    "mocha": "^4.0.1",
+    "tui-jsdoc-template": "^1.2.2"
+  }
+}

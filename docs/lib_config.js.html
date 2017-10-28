@@ -1,0 +1,152 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Source: lib/config.js | hapi arch</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+
+    
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: 150px; height: 13px">
+        
+            <a href="https://github.com/nhnent/tui.jsdoc-template" rel="noopener noreferrer" target="_blank">
+                <img src="http://nhnent.github.io/tui.component.tree/latest/styles/logo.png" width="100%" height="100%">
+            </a>
+        
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">hapi arch</a></h1>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+    <div class="lnb-api hidden"><h3>Modules</h3><ul><li><a href="module-lib_config.html">lib/config</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:lib/config_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="module-lib_config.html#~buildConfigObject">buildConfigObject</a></li><li><a href="module-lib_config.html#~loadCommonConfig">loadCommonConfig</a></li></ul></div></li><li><a href="module-utils_fs.html">utils/fs</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:utils/fs_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="module-utils_fs.html#dirContent">dirContent</a></li><li><a href="module-utils_fs.html#formatFileArray">formatFileArray</a></li><li><a href="module-utils_fs.html#loadModules">loadModules</a></li><li><a href="module-utils_fs.html#resolvePaths">resolvePaths</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="HapiArch.html">HapiArch</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="HapiArch_sub"></div></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+/**
+ * config loader module to load user
+ * environment configurations
+ * @module lib/config
+ */
+
+const fs = require('../utils/fs');
+const _ = require('lodash');
+
+async function config(configPath, env) {
+
+  // get config folder content
+  const content = await fs.dirContent(configPath);
+  const commonConfigInfo = loadCommonConfig(content.files, configPath);
+
+  
+
+  return buildConfigObject(commonConfigInfo);
+
+}
+
+/**
+ * load user common configurations
+ * @param {string[]} configFiles string array contains config files path
+ * @param {string} configPath the main config folder path
+ * @returns {object[]} array of objects contains all the information about the loaded config file
+ * [ name, path, extension, data ]
+ */
+function loadCommonConfig(configFiles, configPath) {
+
+  if (_.isEmpty(configFiles)) return null;
+
+  // resolve config files paths
+  const commonConfigPaths = [];
+  fs.resolvePaths(configFiles, configPath, resolvedPath => commonConfigPaths.push(resolvedPath));
+
+  // format the paths array to split information, e.g name, path, ext...etc
+  const formattedPathsArray = fs.formatFileArray(commonConfigPaths);
+
+  // load all the config files from the paths string array
+  const commonConfig = fs.loadModules(commonConfigPaths);
+
+  // add the loaded modules data to the formatted array
+  _.forEach(commonConfig, configFile => {
+    const formattedPath = _.find(formattedPathsArray, x => x.path === configFile.path);
+    formattedPath.data = configFile.data;
+  });
+
+  return formattedPathsArray;
+
+}
+
+/**
+ * takes an array of the loaded config files information
+ * and return it in a config object style
+ * @param {object[]} configArray array of objects contains the loaded config files
+ * with at least, name and data properties
+ * @returns {object} contains the loaded config files, 
+ * so every file will be a sub object
+ */
+function buildConfigObject (configArray) {
+  const config = {};
+  _.forEach(configArray, configItem => {
+    config[configItem.name] = configItem.data;
+  });
+  return config;
+}
+
+
+module.exports = config;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<footer>
+    <img class="logo" src="http://nhnent.github.io/tui.component.tree/latest/styles/logo.png" style="width: 150px; height: 13px">
+    <div class="footer-text">hapi-arch api documentation</div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        var id = '_sub'.replace(/"/g, '_');
+        var selectedApi = document.getElementById(id); // do not use jquery selector
+        var $selectedApi = $(selectedApi);
+
+        $selectedApi.removeClass('hidden');
+        $selectedApi.parent().find('.glyphicon').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+        showLnbApi();
+    </script>
+
+</body>
+</html>

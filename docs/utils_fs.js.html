@@ -1,0 +1,181 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Source: utils/fs.js | hapi arch</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+
+    
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: 150px; height: 13px">
+        
+            <a href="https://github.com/nhnent/tui.jsdoc-template" rel="noopener noreferrer" target="_blank">
+                <img src="http://nhnent.github.io/tui.component.tree/latest/styles/logo.png" width="100%" height="100%">
+            </a>
+        
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">hapi arch</a></h1>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+    <div class="lnb-api hidden"><h3>Modules</h3><ul><li><a href="module-lib_config.html">lib/config</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:lib/config_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="module-lib_config.html#~buildConfigObject">buildConfigObject</a></li><li><a href="module-lib_config.html#~loadCommonConfig">loadCommonConfig</a></li></ul></div></li><li><a href="module-utils_fs.html">utils/fs</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:utils/fs_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="module-utils_fs.html#dirContent">dirContent</a></li><li><a href="module-utils_fs.html#formatFileArray">formatFileArray</a></li><li><a href="module-utils_fs.html#loadModules">loadModules</a></li><li><a href="module-utils_fs.html#resolvePaths">resolvePaths</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="HapiArch.html">HapiArch</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="HapiArch_sub"></div></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+/**
+ * filesystem helpers module
+ * @module utils/fs
+ */
+
+const fse = require("fs-extra");
+const _ = require('lodash');
+const path = require('path');
+
+function Fs () {}
+
+Fs.prototype = Object.create(fse);
+Fs.prototype.formatFileArray = formatFileArray;
+Fs.prototype.loadModules = loadModules;
+Fs.prototype.dirContent = dirContent;
+Fs.prototype.resolvePaths = resolvePaths;
+
+/**
+ * takes a file paths array and format it
+ * then return an array of objects contains 
+ * all the available information about the files
+ * @param {string[]} filesPath array of strings contains file paths
+ * @returns {object[]} array of objects contains the files information
+ * @instance
+ */
+function formatFileArray (filesPath) {
+  return _.map(filesPath, filePath => {
+    return {
+      name: path.basename(filePath, path.extname(filePath)),
+      path: filePath,
+      extension: path.extname(filePath).replace('.', '')
+    };
+  });
+}
+
+
+/**
+ * load modules with the given paths array
+ * @param {string[]} filesPath array of strings contains file paths
+ * @returns {object[]} array of objects contains the files content and path
+ * @instance
+ */
+function loadModules(filesPath) {
+  return _.map(filesPath, filePath => {
+    return {
+      path: filePath,
+      data: require(filePath)
+    };
+  });
+}
+
+/**
+ * get the content of a given directory,
+ * and return all sub folders and files
+ * @param {string} location directory location
+ * @return {object[]} array of objects contains
+ * all the sub folders and files for the given directory
+ * @instance
+ */
+async function dirContent(location) {
+  const content = await this.readdir(location);
+  const folders = [], files = [];
+
+  _.forEach(content, x => {
+    if (_.indexOf(x, '.') > -1) {
+      files.push(x);
+    }
+    else {
+      folders.push(x);
+    }
+  });
+
+  return {
+    folders,
+    files
+  };
+}
+
+/**
+ * resolve an array of paths using a prefix
+ * @param {string[]} paths string array contains paths to resolve
+ * @param {string} prefix a prefix to resolve for all the given paths
+ * @param {function} fn the handler function, will be called with each resolved path
+ * @returns {string[]} array of strings represent the resolved paths
+ * @instance
+ */
+function resolvePaths (paths, prefix, fn) {
+  const resolved = [];
+  _.forEach(paths, pathInfo => {
+    const resolvedPath = path.resolve(prefix, pathInfo);
+    if (_.isFunction(fn)) {
+      fn(resolvedPath);
+    }
+    resolved.push(resolvedPath);
+  });
+  return resolved;
+}
+
+module.exports = new Fs();
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<footer>
+    <img class="logo" src="http://nhnent.github.io/tui.component.tree/latest/styles/logo.png" style="width: 150px; height: 13px">
+    <div class="footer-text">hapi-arch api documentation</div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        var id = '_sub'.replace(/"/g, '_');
+        var selectedApi = document.getElementById(id); // do not use jquery selector
+        var $selectedApi = $(selectedApi);
+
+        $selectedApi.removeClass('hidden');
+        $selectedApi.parent().find('.glyphicon').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+        showLnbApi();
+    </script>
+
+</body>
+</html>

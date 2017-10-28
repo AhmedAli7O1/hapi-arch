@@ -1,0 +1,24 @@
+{
+  "source": {
+    "include": ["lib", "utils"]
+  },
+  "opts": {
+    "template": "node_modules/tui-jsdoc-template"
+  },
+  "templates": {
+    "logo": {
+        "url": "http://nhnent.github.io/tui.component.tree/latest/styles/logo.png",
+        "width": "150px",
+        "height": "13px",
+        "link": "https://github.com/nhnent/tui.jsdoc-template"
+    },
+    "name": "hapi arch",
+    "footerText": "hapi-arch api documentation",
+    "useCollapsibles": true
+  },
+  "tabNames": {
+    "api": "API",
+    "tutorials": "Examples"
+  }
+
+}
