@@ -34,7 +34,7 @@
         <ul></ul>
     </div>
     
-    <div class="lnb-api hidden"><h3>Modules</h3><ul><li><a href="module-lib_config.html">lib/config</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:lib/config_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="module-lib_config.html#~buildConfigObject">buildConfigObject</a></li><li><a href="module-lib_config.html#~loadCommonConfig">loadCommonConfig</a></li></ul></div></li><li><a href="module-utils_fs.html">utils/fs</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:utils/fs_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="module-utils_fs.html#dirContent">dirContent</a></li><li><a href="module-utils_fs.html#formatFileArray">formatFileArray</a></li><li><a href="module-utils_fs.html#loadModules">loadModules</a></li><li><a href="module-utils_fs.html#resolvePaths">resolvePaths</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="HapiArch.html">HapiArch</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="HapiArch_sub"></div></li></ul></div>
+    <div class="lnb-api hidden"><h3>Modules</h3><ul><li><a href="module-lib_config.html">lib/config</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:lib/config_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="module-lib_config.html#~buildConfigObject">buildConfigObject</a></li><li><a href="module-lib_config.html#~loadConfigModules">loadConfigModules</a></li></ul></div></li><li><a href="module-utils_fs.html">utils/fs</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:utils/fs_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="module-utils_fs.html#dirContent">dirContent</a></li><li><a href="module-utils_fs.html#formatFileArray">formatFileArray</a></li><li><a href="module-utils_fs.html#loadModules">loadModules</a></li><li><a href="module-utils_fs.html#resolvePaths">resolvePaths</a></li><li><a href="module-utils_fs.html#~canRead">canRead</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="HapiArch.html">HapiArch</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="HapiArch_sub"></div></li></ul></div>
 </nav>
 <div id="resizer"></div>
 
@@ -164,12 +164,12 @@ environment configurations</div>
     
         <h4 class="name" id="~buildConfigObject">
             
-                <span class="type-signature"><span class="icon green">inner</span> </span>buildConfigObject<span class="signature">(configArray)</span><span class="type-signature"> &rarr; {object}</span>
+                <span class="type-signature"><span class="icon green">inner</span> </span>buildConfigObject<span class="signature">(common, env)</span><span class="type-signature"> &rarr; {object}</span>
                 
             
             <div class="container-source members">
                 <code><a href="lib_config.js.html">lib/config.js</a></code>,
-                <code><a href="lib_config.js.html#line63">line 63</a></code>
+                <code><a href="lib_config.js.html#line108">line 108</a></code>
             </div>
             
         </h4>
@@ -181,8 +181,8 @@ environment configurations</div>
 
     
     <div class="description">
-        takes an array of the loaded config files information
-and return it in a config object style
+        takes common and env configurations arrays 
+of the loaded config files information
     </div>
     
 
@@ -218,13 +218,13 @@ and return it in a config object style
 
         <tr>
             
-                <td class="name"><code>configArray</code></td>
+                <td class="name"><code>common</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;object></span>
+<span class="param-type">Array.&lt;array></span>
 
 
             
@@ -234,8 +234,30 @@ and return it in a config object style
 
             
 
-            <td class="description last">array of objects contains the loaded config files
-with at least, name and data properties</td>
+            <td class="description last">loaded common configuration</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>env</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;array></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">loaded common configuration</td>
         </tr>
 
     
@@ -269,8 +291,7 @@ with at least, name and data properties</td>
 
 
 
-- contains the loaded config files, 
-so every file will be a sub object
+- merged configuration object
 
 
 
@@ -325,14 +346,14 @@ so every file will be a sub object
 
 <dt>
     
-        <h4 class="name" id="~loadCommonConfig">
+        <h4 class="name" id="~loadConfigModules">
             
-                <span class="type-signature"><span class="icon green">inner</span> </span>loadCommonConfig<span class="signature">(configFiles, configPath)</span><span class="type-signature"> &rarr; {Array.&lt;object>}</span>
+                <span class="type-signature"><span class="icon green">inner</span> </span>loadConfigModules<span class="signature">(configFiles, configPath)</span><span class="type-signature"> &rarr; {Array.&lt;object>}</span>
                 
             
             <div class="container-source members">
                 <code><a href="lib_config.js.html">lib/config.js</a></code>,
-                <code><a href="lib_config.js.html#line31">line 31</a></code>
+                <code><a href="lib_config.js.html#line71">line 71</a></code>
             </div>
             
         </h4>
@@ -344,7 +365,7 @@ so every file will be a sub object
 
     
     <div class="description">
-        load user common configurations
+        load user configurations from a given folder
     </div>
     
 
@@ -453,7 +474,7 @@ so every file will be a sub object
 
 
 
-- array of objects contains all the information about the loaded config file
+- array of objects contains all the information about the loaded config files
 [ name, path, extension, data ]
 
 

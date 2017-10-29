@@ -5,7 +5,7 @@
  * @module utils/fs
  */
 
-const fse = require("fs-extra");
+const fse = require('fs-extra');
 const _ = require('lodash');
 const path = require('path');
 
@@ -27,7 +27,7 @@ Fs.prototype.canRead = canRead;
  * @instance
  */
 function formatFileArray (filesPath) {
-  return _.map(filesPath, filePath => {
+  return _.map(filesPath, (filePath) => {
     return {
       name: path.basename(filePath, path.extname(filePath)),
       path: filePath,
@@ -43,10 +43,11 @@ function formatFileArray (filesPath) {
  * @returns {object[]} array of objects contains the files content and path
  * @instance
  */
-function loadModules(filesPath) {
-  return _.map(filesPath, filePath => {
+function loadModules (filesPath) {
+  return _.map(filesPath, (filePath) => {
     return {
       path: filePath,
+      /* eslint global-require: off */
       data: require(filePath)
     };
   });
@@ -60,11 +61,11 @@ function loadModules(filesPath) {
  * all the sub folders and files for the given directory
  * @instance
  */
-async function dirContent(location) {
+async function dirContent (location) {
   const content = await this.readdir(location);
   const folders = [], files = [];
 
-  _.forEach(content, x => {
+  _.forEach(content, (x) => {
     if (_.indexOf(x, '.') > -1) {
       files.push(x);
     }
@@ -89,7 +90,7 @@ async function dirContent(location) {
  */
 function resolvePaths (paths, prefix, fn) {
   const resolved = [];
-  _.forEach(paths, pathInfo => {
+  _.forEach(paths, (pathInfo) => {
     const resolvedPath = path.resolve(prefix, pathInfo);
     if (_.isFunction(fn)) {
       fn(resolvedPath);
@@ -105,7 +106,7 @@ function resolvePaths (paths, prefix, fn) {
  * @param {string} location file or directory path
  * @return {boolean} true if you have read access, otherwise false
  */
-async function canRead(location) {
+async function canRead (location) {
   try {
     await this.access(location, this.constants.R_OK);
     return true;

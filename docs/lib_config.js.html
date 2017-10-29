@@ -36,7 +36,7 @@
         <ul></ul>
     </div>
     
-    <div class="lnb-api hidden"><h3>Modules</h3><ul><li><a href="module-lib_config.html">lib/config</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:lib/config_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="module-lib_config.html#~buildConfigObject">buildConfigObject</a></li><li><a href="module-lib_config.html#~loadCommonConfig">loadCommonConfig</a></li></ul></div></li><li><a href="module-utils_fs.html">utils/fs</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:utils/fs_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="module-utils_fs.html#dirContent">dirContent</a></li><li><a href="module-utils_fs.html#formatFileArray">formatFileArray</a></li><li><a href="module-utils_fs.html#loadModules">loadModules</a></li><li><a href="module-utils_fs.html#resolvePaths">resolvePaths</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="HapiArch.html">HapiArch</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="HapiArch_sub"></div></li></ul></div>
+    <div class="lnb-api hidden"><h3>Modules</h3><ul><li><a href="module-lib_config.html">lib/config</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:lib/config_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="module-lib_config.html#~buildConfigObject">buildConfigObject</a></li><li><a href="module-lib_config.html#~loadConfigModules">loadConfigModules</a></li></ul></div></li><li><a href="module-utils_fs.html">utils/fs</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:utils/fs_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="module-utils_fs.html#dirContent">dirContent</a></li><li><a href="module-utils_fs.html#formatFileArray">formatFileArray</a></li><li><a href="module-utils_fs.html#loadModules">loadModules</a></li><li><a href="module-utils_fs.html#resolvePaths">resolvePaths</a></li><li><a href="module-utils_fs.html#~canRead">canRead</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="HapiArch.html">HapiArch</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="HapiArch_sub"></div></li></ul></div>
 </nav>
 <div id="resizer"></div>
 
@@ -57,69 +57,119 @@
  */
 
 const fs = require('../utils/fs');
+const obj = require('../utils/obj');
 const _ = require('lodash');
+const path = require('path');
+const log = require('../utils/log');
+const ERRORS = require('../text/errors.json');
 
-async function config(configPath, env) {
-
+async function load (configPath, env) {
   // get config folder content
-  const content = await fs.dirContent(configPath);
-  const commonConfigInfo = loadCommonConfig(content.files, configPath);
+  const content = await loadConfigContent(configPath);
 
-  
+  // load common configurations
+  const commonConfigInfo = loadConfigModules(content.files, configPath);
 
-  return buildConfigObject(commonConfigInfo);
+  // get environment related config folder content
+  const envConfig = await loadEnvConfig(configPath, env);
 
+  // load environment configurations
+  let envConfigInfo = null;
+
+  if (envConfig) {
+    envConfigInfo = loadConfigModules(envConfig.content, envConfig.dirPath);
+  }
+
+  return buildConfigObject(commonConfigInfo, envConfigInfo);
+}
+
+async function loadConfigContent (configPath) {
+  try {
+    const content = await fs.dirContent(configPath);
+    return content;
+  }
+  catch (e) {
+    e.message = `while trying to load the user config directory ${e.message}`;
+    throw e;
+  }
+}
+
+async function loadEnvConfig (configPath, env) {
+  if (!env) {
+    return null;
+  }
+
+  const dirPath = path.resolve(configPath, env);
+
+  if (await fs.canRead(dirPath)) {
+    const content = await fs.dirContent(dirPath);
+    return { content: content.files, dirPath };
+  }
+  else {
+    log.warn(ERRORS.NO_ENV_CONFIG);
+    return null;
+  }
 }
 
 /**
- * load user common configurations
+ * load user configurations from a given folder
  * @param {string[]} configFiles string array contains config files path
  * @param {string} configPath the main config folder path
- * @returns {object[]} array of objects contains all the information about the loaded config file
+ * @returns {object[]} array of objects contains all the information about the loaded config files
  * [ name, path, extension, data ]
  */
-function loadCommonConfig(configFiles, configPath) {
-
-  if (_.isEmpty(configFiles)) return null;
+function loadConfigModules (configFiles, configPath) {
+  if (_.isEmpty(configFiles)) {
+    return null;
+  }
 
   // resolve config files paths
-  const commonConfigPaths = [];
-  fs.resolvePaths(configFiles, configPath, resolvedPath => commonConfigPaths.push(resolvedPath));
+  const configPaths = [];
+  fs.resolvePaths(configFiles, configPath, (resolvedPath) =>
+    configPaths.push(resolvedPath)
+  );
 
   // format the paths array to split information, e.g name, path, ext...etc
-  const formattedPathsArray = fs.formatFileArray(commonConfigPaths);
+  const formattedPathsArray = fs.formatFileArray(configPaths);
 
   // load all the config files from the paths string array
-  const commonConfig = fs.loadModules(commonConfigPaths);
+  const configs = fs.loadModules(configPaths);
 
   // add the loaded modules data to the formatted array
-  _.forEach(commonConfig, configFile => {
-    const formattedPath = _.find(formattedPathsArray, x => x.path === configFile.path);
+  _.forEach(configs, (configFile) => {
+    const formattedPath = _.find(
+      formattedPathsArray,
+      (x) => x.path === configFile.path
+    );
     formattedPath.data = configFile.data;
   });
 
   return formattedPathsArray;
-
 }
+
 
 /**
- * takes an array of the loaded config files information
- * and return it in a config object style
- * @param {object[]} configArray array of objects contains the loaded config files
- * with at least, name and data properties
- * @returns {object} contains the loaded config files, 
- * so every file will be a sub object
+ * takes common and env configurations arrays 
+ * of the loaded config files information
+ * @param {array[]} common loaded common configuration 
+ * @param {array[]} env loaded common configuration
+ * @returns {object} merged configuration object
  */
-function buildConfigObject (configArray) {
-  const config = {};
-  _.forEach(configArray, configItem => {
-    config[configItem.name] = configItem.data;
-  });
-  return config;
+function buildConfigObject (common, env) { 
+  common = obj.arrayToObject(common, 'name', 'data');
+  env = obj.arrayToObject(env, 'name', 'data');
+  return _.merge(common, env);
 }
 
 
-module.exports = config;
+module.exports = {
+  load,
+  _test: {
+    load,
+    loadConfigModules,
+    buildConfigObject
+  }
+};
 </code></pre>
         </article>
     </section>

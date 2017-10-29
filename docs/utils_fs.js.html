@@ -36,7 +36,7 @@
         <ul></ul>
     </div>
     
-    <div class="lnb-api hidden"><h3>Modules</h3><ul><li><a href="module-lib_config.html">lib/config</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:lib/config_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="module-lib_config.html#~buildConfigObject">buildConfigObject</a></li><li><a href="module-lib_config.html#~loadCommonConfig">loadCommonConfig</a></li></ul></div></li><li><a href="module-utils_fs.html">utils/fs</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:utils/fs_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="module-utils_fs.html#dirContent">dirContent</a></li><li><a href="module-utils_fs.html#formatFileArray">formatFileArray</a></li><li><a href="module-utils_fs.html#loadModules">loadModules</a></li><li><a href="module-utils_fs.html#resolvePaths">resolvePaths</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="HapiArch.html">HapiArch</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="HapiArch_sub"></div></li></ul></div>
+    <div class="lnb-api hidden"><h3>Modules</h3><ul><li><a href="module-lib_config.html">lib/config</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:lib/config_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="module-lib_config.html#~buildConfigObject">buildConfigObject</a></li><li><a href="module-lib_config.html#~loadConfigModules">loadConfigModules</a></li></ul></div></li><li><a href="module-utils_fs.html">utils/fs</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:utils/fs_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="module-utils_fs.html#dirContent">dirContent</a></li><li><a href="module-utils_fs.html#formatFileArray">formatFileArray</a></li><li><a href="module-utils_fs.html#loadModules">loadModules</a></li><li><a href="module-utils_fs.html#resolvePaths">resolvePaths</a></li><li><a href="module-utils_fs.html#~canRead">canRead</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="HapiArch.html">HapiArch</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="HapiArch_sub"></div></li></ul></div>
 </nav>
 <div id="resizer"></div>
 
@@ -55,7 +55,7 @@
  * @module utils/fs
  */
 
-const fse = require("fs-extra");
+const fse = require('fs-extra');
 const _ = require('lodash');
 const path = require('path');
 
@@ -66,6 +66,7 @@ Fs.prototype.formatFileArray = formatFileArray;
 Fs.prototype.loadModules = loadModules;
 Fs.prototype.dirContent = dirContent;
 Fs.prototype.resolvePaths = resolvePaths;
+Fs.prototype.canRead = canRead;
 
 /**
  * takes a file paths array and format it
@@ -76,7 +77,7 @@ Fs.prototype.resolvePaths = resolvePaths;
  * @instance
  */
 function formatFileArray (filesPath) {
-  return _.map(filesPath, filePath => {
+  return _.map(filesPath, (filePath) => {
     return {
       name: path.basename(filePath, path.extname(filePath)),
       path: filePath,
@@ -92,10 +93,11 @@ function formatFileArray (filesPath) {
  * @returns {object[]} array of objects contains the files content and path
  * @instance
  */
-function loadModules(filesPath) {
-  return _.map(filesPath, filePath => {
+function loadModules (filesPath) {
+  return _.map(filesPath, (filePath) => {
     return {
       path: filePath,
+      /* eslint global-require: off */
       data: require(filePath)
     };
   });
@@ -109,11 +111,11 @@ function loadModules(filesPath) {
  * all the sub folders and files for the given directory
  * @instance
  */
-async function dirContent(location) {
+async function dirContent (location) {
   const content = await this.readdir(location);
   const folders = [], files = [];
 
-  _.forEach(content, x => {
+  _.forEach(content, (x) => {
     if (_.indexOf(x, '.') > -1) {
       files.push(x);
     }
@@ -138,7 +140,7 @@ async function dirContent(location) {
  */
 function resolvePaths (paths, prefix, fn) {
   const resolved = [];
-  _.forEach(paths, pathInfo => {
+  _.forEach(paths, (pathInfo) => {
     const resolvedPath = path.resolve(prefix, pathInfo);
     if (_.isFunction(fn)) {
       fn(resolvedPath);
@@ -146,6 +148,22 @@ function resolvePaths (paths, prefix, fn) {
     resolved.push(resolvedPath);
   });
   return resolved;
+}
+
+
+/**
+ * check read permissions for the given file or directory path
+ * @param {string} location file or directory path
+ * @return {boolean} true if you have read access, otherwise false
+ */
+async function canRead (location) {
+  try {
+    await this.access(location, this.constants.R_OK);
+    return true;
+  }
+  catch (e) {
+    return false;
+  }
 }
 
 module.exports = new Fs();

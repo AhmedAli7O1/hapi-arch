@@ -1,10 +1,10 @@
 parserOptions:
-  ecmaVersion: 6
+  ecmaVersion: 8
   sourceType: 'module'
   ecmaFeatures:
     jsx: true
     impliedStrict: true
-env: { node: true }
+env: { node: true, mocha: true }
 globals: { CONFIG: true, ENV: true, TEST: true, es6: true, Promise: true }
 extends: "eslint:recommended"
 rules:
@@ -19,7 +19,6 @@ rules:
   no-redeclare: error
   no-undef: warn
   camelcase: warn
-  no-magic-numbers: warn
   global-require: error
   curly: error
   brace-style: 
@@ -30,9 +29,6 @@ rules:
     - error
     - always
   no-template-curly-in-string: error
-  func-style:
-    - error
-    - expression
   new-parens: error
   space-in-parens:
     - warn

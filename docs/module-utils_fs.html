@@ -34,7 +34,7 @@
         <ul></ul>
     </div>
     
-    <div class="lnb-api hidden"><h3>Modules</h3><ul><li><a href="module-lib_config.html">lib/config</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:lib/config_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="module-lib_config.html#~buildConfigObject">buildConfigObject</a></li><li><a href="module-lib_config.html#~loadCommonConfig">loadCommonConfig</a></li></ul></div></li><li><a href="module-utils_fs.html">utils/fs</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:utils/fs_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="module-utils_fs.html#dirContent">dirContent</a></li><li><a href="module-utils_fs.html#formatFileArray">formatFileArray</a></li><li><a href="module-utils_fs.html#loadModules">loadModules</a></li><li><a href="module-utils_fs.html#resolvePaths">resolvePaths</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="HapiArch.html">HapiArch</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="HapiArch_sub"></div></li></ul></div>
+    <div class="lnb-api hidden"><h3>Modules</h3><ul><li><a href="module-lib_config.html">lib/config</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:lib/config_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="module-lib_config.html#~buildConfigObject">buildConfigObject</a></li><li><a href="module-lib_config.html#~loadConfigModules">loadConfigModules</a></li></ul></div></li><li><a href="module-utils_fs.html">utils/fs</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:utils/fs_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="module-utils_fs.html#dirContent">dirContent</a></li><li><a href="module-utils_fs.html#formatFileArray">formatFileArray</a></li><li><a href="module-utils_fs.html#loadModules">loadModules</a></li><li><a href="module-utils_fs.html#resolvePaths">resolvePaths</a></li><li><a href="module-utils_fs.html#~canRead">canRead</a></li></ul></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="HapiArch.html">HapiArch</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="HapiArch_sub"></div></li></ul></div>
 </nav>
 <div id="resizer"></div>
 
@@ -168,7 +168,7 @@
             
             <div class="container-source members">
                 <code><a href="utils_fs.js.html">utils/fs.js</a></code>,
-                <code><a href="utils_fs.js.html#line62">line 62</a></code>
+                <code><a href="utils_fs.js.html#line64">line 64</a></code>
             </div>
             
         </h4>
@@ -330,7 +330,7 @@ all the sub folders and files for the given directory
             
             <div class="container-source members">
                 <code><a href="utils_fs.js.html">utils/fs.js</a></code>,
-                <code><a href="utils_fs.js.html#line28">line 28</a></code>
+                <code><a href="utils_fs.js.html#line29">line 29</a></code>
             </div>
             
         </h4>
@@ -492,7 +492,7 @@ all the available information about the files
             
             <div class="container-source members">
                 <code><a href="utils_fs.js.html">utils/fs.js</a></code>,
-                <code><a href="utils_fs.js.html#line45">line 45</a></code>
+                <code><a href="utils_fs.js.html#line46">line 46</a></code>
             </div>
             
         </h4>
@@ -652,7 +652,7 @@ all the available information about the files
             
             <div class="container-source members">
                 <code><a href="utils_fs.js.html">utils/fs.js</a></code>,
-                <code><a href="utils_fs.js.html#line89">line 89</a></code>
+                <code><a href="utils_fs.js.html#line91">line 91</a></code>
             </div>
             
         </h4>
@@ -797,6 +797,166 @@ all the available information about the files
 
 
 - array of strings represent the resolved paths
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="~canRead">
+            
+                <span class="type-signature"><span class="icon green">async</span>, <span class="icon green">inner</span> </span>canRead<span class="signature">(location)</span><span class="type-signature"> &rarr; {boolean}</span>
+                
+            
+            <div class="container-source members">
+                <code><a href="utils_fs.js.html">utils/fs.js</a></code>,
+                <code><a href="utils_fs.js.html#line109">line 109</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        check read permissions for the given file or directory path
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>location</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">file or directory path</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">boolean</span>
+
+
+
+
+
+- true if you have read access, otherwise false
 
 
 
