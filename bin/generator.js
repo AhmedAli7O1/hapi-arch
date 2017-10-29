@@ -285,8 +285,7 @@ const genNew = function () {
           data: {
             plugins: { blacklist: ['pluginName'] },
             archServices: mongo === 'y' ? ['mongo'] : [],
-            archPlugins: mongo === 'y' ? ['mongoose'] : [],
-            standards: { env: ['development', 'test'] }
+            archPlugins: mongo === 'y' ? ['mongoose'] : []
           }
         },
         {
