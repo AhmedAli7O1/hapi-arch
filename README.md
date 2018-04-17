@@ -5,10 +5,10 @@
 [![Build Status](https://travis-ci.org/AhmedAli7O1/hapi-arch.svg?branch=master)](https://travis-ci.org/AhmedAli7O1/hapi-arch)
 [![npm](https://img.shields.io/npm/v/hapi-arch.svg)]()
 [![npm](https://img.shields.io/npm/dt/hapi-arch.svg)]()
-[![Libraries.io for GitHub](https://img.shields.io/librariesio/github/AhmedAli7O1/hapi-arch.svg)]()
-[![Code Climate](https://img.shields.io/codeclimate/github/AhmedAli7O1/hapi-arch.svg)]()
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/6504095b7b6547e88d8bb06c0001104a)](https://www.codacy.com/app/AhmedAli7O1/hapi-arch?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=AhmedAli7O1/hapi-arch&amp;utm_campaign=Badge_Grade)
 [![Known Vulnerabilities](https://snyk.io/test/npm/hapi-arch/badge.svg)](https://snyk.io/test/npm/hapi-arch)
+
+<b>Checkout the new framework [NODE ARCH](https://github.com/nodearch/arch) manage and generate a powerful fully organized and customizable node.js server of your choice e.g hapi, express, koa...etc</b>
 
 [v1 documentations](/README-V1.md)
 
