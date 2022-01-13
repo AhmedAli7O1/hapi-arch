@@ -12,13 +12,14 @@
     "colors": "^1.1.2",
     "commander": "^2.11.0",
     "hapi": "^16.6.2",
-    "lab": "^14.3.1",
+    "lab": "^16.0.0",
     "lodash": "^4.17.4",
-    "moment": "^2.19.1",
+    "moment": "^2.19.3",
     "node-schedule": "^1.2.5",
     "pretty-error": "^2.1.1",
     "verror": "^1.10.0",
-    "yargs": "^8.0.2"
+    "yargs": "^15.0.1",
+    "@snyk/protect": "latest"
   },
   "bin": {
     "hapi-arch": "./bin/index.js"
@@ -38,5 +39,10 @@
   "license": "MIT",
   "devDependencies": {
     "eslint": "^4.10.0"
-  }
+  },
+  "scripts": {
+    "prepare": "npm run snyk-protect",
+    "snyk-protect": "snyk-protect"
+  },
+  "snyk": true
 }

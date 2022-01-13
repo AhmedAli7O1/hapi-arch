@@ -1,0 +1,112 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.22.1
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  'npm:debug:20170905':
+    - lab > eslint > debug:
+        patched: '2022-01-13T14:06:56.759Z'
+  'npm:hoek:20180212':
+    - hapi > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - lab > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > boom > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > accept > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > ammo > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > call > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > topo > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > catbox > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > catbox-memory > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > heavy > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > iron > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > joi > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > mimos > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > podium > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > shot > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > statehood > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > subtext > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > accept > boom > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > ammo > boom > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > call > boom > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > catbox > boom > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > cryptiles > boom > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > heavy > boom > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > iron > boom > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > statehood > boom > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > subtext > boom > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > joi > topo > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > catbox > joi > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > heavy > joi > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > podium > joi > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > shot > joi > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > statehood > joi > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > statehood > iron > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > subtext > pez > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > subtext > wreck > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > iron > cryptiles > boom > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > statehood > cryptiles > boom > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > statehood > iron > boom > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > subtext > content > boom > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > subtext > pez > boom > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > subtext > wreck > boom > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > catbox > joi > topo > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > heavy > joi > topo > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > podium > joi > topo > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > shot > joi > topo > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > statehood > joi > topo > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > subtext > pez > nigel > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > statehood > iron > cryptiles > boom > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > subtext > pez > content > boom > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+    - hapi > subtext > pez > nigel > vise > hoek:
+        patched: '2022-01-13T14:06:56.759Z'
+  'npm:moment:20170905':
+    - node-schedule > cron-parser > moment-timezone > moment:
+        patched: '2022-01-13T14:06:56.759Z'
